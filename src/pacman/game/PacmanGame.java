@@ -2,32 +2,43 @@ package pacman.game;
 
 import java.awt.Dimension;
 
+
+import pacman.scene.PacmanLevelScene;
+
+import com.uqbar.vainilla.DesktopGameLauncher;
 import com.uqbar.vainilla.Game;
 
 public class PacmanGame extends Game {
 
+	public static void main(String[] args) throws Exception {
+		new DesktopGameLauncher(new PacmanGame()).launch();
+	}
+	
+	public PacmanGame(){
+		super();
+	}
+	
+	
 	@Override
 	protected void initializeResources() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void setUpScenes() {
-		// TODO Auto-generated method stub
+		PacmanLevelScene scene = new PacmanLevelScene("mapa1.png");
+		this.setCurrentScene(scene);
 
 	}
 
 	@Override
 	public Dimension getDisplaySize() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Dimension(800, 600);
 	}
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Pacman";
 	}
 
 }
