@@ -15,7 +15,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	private double waitingTime = 0;
 	
 	public Ghost() {
-		super(SpriteManager.getCroppedPacmanSprite(2, 122, 15, 15),10,10);
+		super(SpriteManager.getCroppedPacmanSprite(2, 122, 15, 15),60,10);
 	}
 	
 	@Override
@@ -27,16 +27,25 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	public void update(DeltaState deltaState) {
 		
 		MapGraph<Valuable> mapGraph = this.getScene().getMapGraph();
-		deltaState.getDelta();
 		if(this.canMove())
 		{
 			Node<Valuable> source = mapGraph.obtainNode((int)this.getY(),(int)this.getX());
-			Node<Valuable> destination = mapGraph.obtainNode(41,36);
+			
+			if(this.getY()==179 && this.getX()==360){
+				source.setMinDistance(Double.POSITIVE_INFINITY);
+				source.setPrevious(null);
+				this.getScene().changePacmanPosition();
+			}
+			Node<Valuable> destination = this.getScene().getPacmanPosition();
 			List<Node<Valuable>> path = mapGraph.getShortestPath(source, destination);
 			if(path!=null && path.size()>0)
 			{
+				source.setMinDistance(Double.POSITIVE_INFINITY);
+				source.setPrevious(null);
 				this.setX(path.get(0).getColumn());
 				this.setY(path.get(0).getRow());
+				path.get(0).setMinDistance(Double.POSITIVE_INFINITY);
+				path.get(0).setPrevious(null);
 			}
 		}else{
 			this.increaseWaitingTime(deltaState.getDelta());
