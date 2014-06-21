@@ -13,8 +13,8 @@ import com.uqbar.vainilla.graphs.Valuable;
 public class PacmanLevelScene extends GraphGameScene {
 
 	private Ghost ghost = new Ghost();
-	private int pacmanColumn = 115;
-	private int pacmanRow = 182;
+	private int pacmanColumn = 114;
+	private int pacmanRow = 230;
 	
 	
 	
@@ -28,7 +28,7 @@ public class PacmanLevelScene extends GraphGameScene {
 		this.initializeBackground();
 		this.addComponent(this.getGhost());
 		this.addComponent(new Pacman());
-
+		
 	}
 	
 	private void initializeBackground() {
