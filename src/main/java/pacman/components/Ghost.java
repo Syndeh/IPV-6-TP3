@@ -1,19 +1,13 @@
 package pacman.components;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
-
 import pacman.scene.PacmanLevelScene;
-
+import pacman.utils.SpriteManager;
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
-import com.uqbar.vainilla.GameComponent;
-import com.uqbar.vainilla.appearances.Circle;
-import com.uqbar.vainilla.appearances.Sprite;
 import com.uqbar.vainilla.graphs.MapGraph;
 import com.uqbar.vainilla.graphs.Node;
-import com.uqbar.vainilla.graphs.PixelValuable;
 import com.uqbar.vainilla.graphs.Valuable;
 
 public class Ghost extends AIComponent<PacmanLevelScene> {
@@ -21,7 +15,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	private double waitingTime = 0;
 	
 	public Ghost() {
-		super(new Circle(Color.RED, 10),10, 10);
+		super(SpriteManager.getCroppedPacmanSprite(2, 122, 15, 15),10,10);
 	}
 	
 	@Override
