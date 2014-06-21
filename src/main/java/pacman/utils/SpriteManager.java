@@ -57,4 +57,24 @@ public class SpriteManager {
 		return SpriteManager.INSTANCE.getPacmanSprite().crop(initX, initY, width, height);
 	}
 
+	public Sprite[] getGhostUP() {
+		int[][] cuts = {{3,83},{23,83}};
+		return this.cropSprites(cuts);
+	}
+	
+	public Sprite[] getGhostDOWN() {
+		int[][] cuts = {{43,83},{63,83}};
+		return this.cropSprites(cuts);
+	}
+	
+	public Sprite[] getGhostLEFT() {
+		int[][] cuts = {{3,3},{23,3},{3,3},{43,3}};
+		return this.cropSprites(cuts);
+	}
+	
+	public Sprite[] getGhostRIGHT() {
+		int[][] cuts = {{3,23},{23,23},{3,23},{43,3}};
+		return this.cropSprites(cuts);
+	}
+	
 }

@@ -25,7 +25,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	
 	@Override
 	public void update(DeltaState deltaState) {
-		
+		super.update(deltaState);
 		MapGraph<Valuable> mapGraph = this.getScene().getMapGraph();
 		if(this.canMove())
 		{
@@ -46,11 +46,10 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 			this.increaseWaitingTime(deltaState.getDelta());
 		}
 	    
-		super.update(deltaState);
 	}
 
 	private void increaseWaitingTime(double delta) {
-		this.setWaitingTime(this.getWaitingTime()+delta * 50);
+		this.setWaitingTime(this.getWaitingTime()+delta*50);
 		
 	}
 

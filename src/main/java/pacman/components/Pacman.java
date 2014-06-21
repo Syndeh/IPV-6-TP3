@@ -64,6 +64,8 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 			this.row = this.row + (int)this.direction.getY();
 			this.setX(this.column*2);
 			this.setY(this.row*2);
+			this.getScene().setPacmanRow(this.row);
+			this.getScene().setPacmanColumn(this.column);
 			this.setWaitingTime(0);
 		}else{
 			this.increaseWaitingTime(deltaState.getDelta());
@@ -164,6 +166,22 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	public void setDirection(Vector2D direction) {
 		this.direction = direction;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
 	}
 
 }
