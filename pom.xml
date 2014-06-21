@@ -4,6 +4,10 @@
 	<groupId>pacman</groupId>
 	<artifactId>pacman</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -16,6 +20,16 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	            <filtering>false</filtering>
+	        </resource>
+	        <resource>
+	            <directory>src/test/resources</directory>
+	            <filtering>false</filtering>
+	        </resource>
+    	</resources>
 	</build>
 
 	<dependencies>

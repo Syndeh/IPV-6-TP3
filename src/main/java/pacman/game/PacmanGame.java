@@ -2,6 +2,7 @@ package pacman.game;
 
 import java.awt.Dimension;
 
+
 import pacman.scene.PacmanLevelScene;
 
 import com.uqbar.vainilla.DesktopGameLauncher;
@@ -13,23 +14,31 @@ public class PacmanGame extends Game {
 		new DesktopGameLauncher(new PacmanGame()).launch();
 	}
 	
+	public PacmanGame(){
+		super();
+	}
+	
+	
 	@Override
 	protected void initializeResources() {
+
 	}
 
 	@Override
 	protected void setUpScenes() {
-		this.setCurrentScene(new PacmanLevelScene());
+		PacmanLevelScene scene = new PacmanLevelScene("mapa1.png");
+		this.setCurrentScene(scene);
+
 	}
 
 	@Override
 	public Dimension getDisplaySize() {
-		return new Dimension(400, 600);
+		return new Dimension(460, 490);
 	}
 
 	@Override
 	public String getTitle() {
-		return "PACMAN";
+		return "Pacman";
 	}
 
 }

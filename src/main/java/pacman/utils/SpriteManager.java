@@ -1,9 +1,9 @@
 package pacman.utils;
-
 import com.uqbar.vainilla.appearances.Animation;
 import com.uqbar.vainilla.appearances.Sprite;
 
 public class SpriteManager {
+
 
 	public static final SpriteManager INSTANCE = new SpriteManager();
 
@@ -58,4 +58,13 @@ public class SpriteManager {
 		result[3] = Sprite.fromImage("images/pacmansprite.png").crop(43, 3, 13, 13);
 		return result;
 	}
+
+	public Sprite getPacmanSprite(){
+		return Sprite.fromImage("images/generalsprite.png");
+	}
+	
+	public Sprite getCroppedPacmanSprite(int initX, int initY, int width, int height){
+		return SpriteManager.INSTANCE.getPacmanSprite().crop(initX, initY, width, height);
+	}
+
 }
