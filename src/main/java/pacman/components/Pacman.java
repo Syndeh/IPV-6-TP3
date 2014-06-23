@@ -11,7 +11,7 @@ import com.uqbar.vainilla.utils.Vector2D;
 public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	private Vector2D direction;
-	private int speed = 100;
+	private int speed = 200;
 
 	public Pacman() {
 		super(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()
@@ -23,6 +23,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	public void update(DeltaState deltaState) {
 		this.changeDirection(deltaState);
 		this.doMovement(deltaState);
+		super.update(deltaState);
 	}
 
 	private void doMovement(DeltaState deltaState) {

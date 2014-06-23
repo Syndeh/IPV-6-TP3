@@ -8,8 +8,7 @@ public class SpriteManager {
 	public static final SpriteManager INSTANCE = new SpriteManager();
 
 	public Animation getAnimation(String spriteRef) {
-//		return new Animation(0.2, this.getPacmanLEFT());
-		return new Animation(0.5, this.getSprite(spriteRef));
+		return new Animation(0.08, this.getSprite(spriteRef));
 	}
 
 	private Sprite[] getSprite(String spriteRef) {
