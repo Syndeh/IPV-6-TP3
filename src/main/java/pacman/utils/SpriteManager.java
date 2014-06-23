@@ -8,8 +8,8 @@ public class SpriteManager {
 	public static final SpriteManager INSTANCE = new SpriteManager();
 
 	public Animation getAnimation(String spriteRef) {
-		return new Animation(5, this.getPacmanLEFT());
-//		return new Animation(0.5, this.getSprite(spriteRef));
+//		return new Animation(0.2, this.getPacmanLEFT());
+		return new Animation(0.5, this.getSprite(spriteRef));
 	}
 
 	private Sprite[] getSprite(String spriteRef) {
@@ -22,40 +22,28 @@ public class SpriteManager {
 		return null;
 	}
 
-	private Sprite[] cropSprites(){
-		return null;
+	private Sprite[] cropSprites(int[][] array){
+		Sprite[] result = new Sprite[array.length];
+		for (int i = 0; i < array.length; i++) {
+			result[i] = Sprite.fromImage("images/pacmansprite.png").crop(array[i][0], array[i][1], 13, 13).scaleTo(100, 100);
+		}
+		return result;
 	}
 	
 	public Sprite[] getPacmanUP() {
-		Sprite[] result = new Sprite[4];
-		result[0] = Sprite.fromImage("images/pacmansprite.png").crop(3, 43, 13, 13);
-		result[1] = Sprite.fromImage("images/pacmansprite.png").crop(23, 43, 13, 13);
-		result[2] = Sprite.fromImage("images/pacmansprite.png").crop(3, 43, 13, 13);
-		result[3] = Sprite.fromImage("images/pacmansprite.png").crop(43, 3, 13, 13);
-		return result;
+		int[][] cuts = {{3,43},{23,43},{3,43},{43,3}};
+		return this.cropSprites(cuts);
 	}
 	public Sprite[] getPacmanDOWN() {
-		Sprite[] result = new Sprite[4];
-		result[0] = Sprite.fromImage("images/pacmansprite.png").crop(3, 63, 13, 13);
-		result[1] = Sprite.fromImage("images/pacmansprite.png").crop(23, 62, 13, 13);
-		result[2] = Sprite.fromImage("images/pacmansprite.png").crop(3, 63, 13, 13);
-		result[3] = Sprite.fromImage("images/pacmansprite.png").crop(43, 3, 13, 13);
-		return result;
+		int[][] cuts = {{3,63},{23,62},{3,63},{43,3}};
+		return this.cropSprites(cuts);
 	}
 	public Sprite[] getPacmanLEFT() {
-		Sprite[] result = new Sprite[4];
-		result[0] = Sprite.fromImage("images/pacmansprite.png").crop(3, 3, 13, 13).scaleTo(100, 100);
-		result[1] = Sprite.fromImage("images/pacmansprite.png").crop(23, 3, 13, 13).scaleTo(100, 100);
-		result[2] = Sprite.fromImage("images/pacmansprite.png").crop(3, 3, 13, 13).scaleTo(100, 100);
-		result[3] = Sprite.fromImage("images/pacmansprite.png").crop(43, 3, 13, 13).scaleTo(100, 100);
-		return result;
+		int[][] cuts = {{3,3},{23,3},{3,3},{43,3}};
+		return this.cropSprites(cuts);
 	}
 	public Sprite[] getPacmanRIGHT() {
-		Sprite[] result = new Sprite[4];
-		result[0] = Sprite.fromImage("images/pacmansprite.png").crop(23, 3, 13, 13);
-		result[1] = Sprite.fromImage("images/pacmansprite.png").crop(23, 23, 13, 13);
-		result[2] = Sprite.fromImage("images/pacmansprite.png").crop(23, 3, 13, 13);
-		result[3] = Sprite.fromImage("images/pacmansprite.png").crop(43, 3, 13, 13);
-		return result;
+		int[][] cuts = {{3,23},{23,23},{3,23},{43,3}};
+		return this.cropSprites(cuts);
 	}
 }
