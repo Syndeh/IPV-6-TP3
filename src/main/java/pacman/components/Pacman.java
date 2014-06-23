@@ -14,13 +14,14 @@ import com.uqbar.vainilla.utils.Vector2D;
 public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	private Vector2D direction;
-	private int speed = 100;
 	
 	public static final Vector2D DIRECTION_UP = new Vector2D(0,-1);
 	public static final Vector2D DIRECTION_DOWN = new Vector2D(0, 1);
 	public static final Vector2D DIRECTION_LEFT = new Vector2D(-1, 0);
 	public static final Vector2D DIRECTION_RIGHT = new Vector2D(1, 0);
 	
+	private int speed = 200;
+
 	public Pacman() {
 		this.setDirection(DIRECTION_RIGHT);
 		this.initRules();
@@ -33,7 +34,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	@Override
 	public void update(DeltaState deltaState) {
-		this.changeDirection(deltaState);	
+		this.changeDirection(deltaState);
 		this.doMovement(deltaState);
 		super.update(deltaState);
 	}
@@ -89,4 +90,3 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	}
 
 }
-
