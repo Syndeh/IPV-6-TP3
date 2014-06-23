@@ -24,7 +24,7 @@ public class PacmanGame extends Game {
 
 	@Override
 	public Dimension getDisplaySize() {
-		return new Dimension(400, 600);
+		return new Dimension(520, 680);
 	}
 
 	@Override

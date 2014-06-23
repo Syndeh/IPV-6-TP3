@@ -24,7 +24,7 @@ public class SpriteManager {
 	private Sprite[] cropSprites(int[][] array){
 		Sprite[] result = new Sprite[array.length];
 		for (int i = 0; i < array.length; i++) {
-			result[i] = Sprite.fromImage("images/pacmansprite.png").crop(array[i][0], array[i][1], 13, 13).scaleTo(30, 30);
+			result[i] = Sprite.fromImage("images/pacmansprite.png").crop(array[i][0], array[i][1], 14, 14).scaleTo(30, 30);
 		}
 		return result;
 	}
@@ -48,4 +48,26 @@ public class SpriteManager {
 		int[][] cuts = {{3,23},{23,23},{3,23},{43,3}};
 		return this.cropSprites(cuts);
 	}
+	
+	
+	public Sprite[] getGhostUP() {
+		int[][] cuts = {{3,83},{23,83}};
+		return this.cropSprites(cuts);
+	}
+	
+	public Sprite[] getGhostDOWN() {
+		int[][] cuts = {{43,83},{63,83}};
+		return this.cropSprites(cuts);
+	}
+	
+	public Sprite[] getGhostLEFT() {
+		int[][] cuts = {{3,3},{23,3},{3,3},{43,3}};
+		return this.cropSprites(cuts);
+	}
+	
+	public Sprite[] getGhostRIGHT() {
+		int[][] cuts = {{3,23},{23,23},{3,23},{43,3}};
+		return this.cropSprites(cuts);
+	}
+	
 }
