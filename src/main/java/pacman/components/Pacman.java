@@ -24,7 +24,6 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	public Pacman() {
 		this.setDirection(DIRECTION_RIGHT);
-		this.initRules();
 		this.resetAppearance();
 	}
 
