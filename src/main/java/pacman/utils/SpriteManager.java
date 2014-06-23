@@ -24,7 +24,7 @@ public class SpriteManager {
 	private Sprite[] cropSprites(int[][] array){
 		Sprite[] result = new Sprite[array.length];
 		for (int i = 0; i < array.length; i++) {
-			result[i] = Sprite.fromImage("images/pacmansprite.png").crop(array[i][0], array[i][1], 13, 13).scaleTo(100, 100);
+			result[i] = Sprite.fromImage("images/pacmansprite.png").crop(array[i][0], array[i][1], 13, 13).scaleTo(30, 30);
 		}
 		return result;
 	}
