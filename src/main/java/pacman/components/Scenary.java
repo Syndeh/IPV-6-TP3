@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Point2D.Double;
 
 import pacman.scene.PacmanLevelScene;
+import pacman.utils.PacmanDensityMapGenerator;
 import pacman.utils.PacmanTerrainGenerator;
 
 import com.uqbar.vainilla.GameComponent;
@@ -28,6 +29,7 @@ public class Scenary extends GameComponent<PacmanLevelScene> {
 	public void onSceneActivated() {
 		super.onSceneActivated();
 		PacmanTerrainGenerator terrainGenerator = new PacmanTerrainGenerator(
+		//PacmanDensityMapGenerator terrainGenerator = new PacmanDensityMapGenerator(
 				this.getScene().getMapParser()
 				, this.getGame().getDisplayHeight()
 				, this.getGame().getDisplayWidth()

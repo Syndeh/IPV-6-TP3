@@ -10,7 +10,7 @@ import com.uqbar.vainilla.appearances.Sprite;
 import com.uqbar.vainilla.utils.ClassLoaderResourcesProvider;
 import com.uqbar.vainilla.utils.ResourceProvider;
 
-public class PacmanTerrainGenerator {
+public class PacmanDensityMapGenerator {
 
 	
 	private Color[][] terrainGrid;
@@ -25,7 +25,7 @@ public class PacmanTerrainGenerator {
 	
 	public static ResourceProvider defaultResourceProvider = new ClassLoaderResourcesProvider();
 
-	public PacmanTerrainGenerator(PacmanImageMapParser mapParser, int height, int width, int cols, int rows) {
+	public PacmanDensityMapGenerator(PacmanImageMapParser mapParser, int height, int width, int cols, int rows) {
 		this.terrainGrid = mapParser.getTerrainGrid();
 		this.cols = cols;
 		this.rows = rows;
@@ -55,14 +55,14 @@ public class PacmanTerrainGenerator {
 					int y = j * cellSize;
 					terrainColor = terrainGrid[i][j];
 					System.out.println(terrainColor.getRGB());
-					if( terrainAllowedColors.contains(terrainColor)) {
-						//if (terrainColor.equals(Color.BLACK)) {
-							graphics.setColor(terrainColor);
-							graphics.fillRect(y, x, this.cellSize, this.cellSize);
-						//} else {
-							//this.getWallImage(new Double(i, j));
-						//}
-					}
+					//if( terrainAllowedColors.contains(terrainColor)) {
+						if (terrainColor.equals(new Color(-16767233))) {
+							graphics.setColor(Color.BLACK);
+						} else {
+							graphics.setColor(Color.WHITE);
+						}
+						graphics.fillRect(y, x, this.cellSize, this.cellSize);
+					//}
 				}
 			}
 		} catch (Exception e) {
