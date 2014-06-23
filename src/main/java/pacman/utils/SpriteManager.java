@@ -8,7 +8,6 @@ public class SpriteManager {
 	public static final SpriteManager INSTANCE = new SpriteManager();
 
 	public Animation getAnimation(String spriteRef) {
-//		return new Animation(0.2, this.getPacmanLEFT());
 		return new Animation(0.5, this.getSprite(spriteRef));
 	}
 
@@ -34,14 +33,17 @@ public class SpriteManager {
 		int[][] cuts = {{3,43},{23,43},{3,43},{43,3}};
 		return this.cropSprites(cuts);
 	}
+	
 	public Sprite[] getPacmanDOWN() {
 		int[][] cuts = {{3,63},{23,62},{3,63},{43,3}};
 		return this.cropSprites(cuts);
 	}
+	
 	public Sprite[] getPacmanLEFT() {
 		int[][] cuts = {{3,3},{23,3},{3,3},{43,3}};
 		return this.cropSprites(cuts);
 	}
+	
 	public Sprite[] getPacmanRIGHT() {
 		int[][] cuts = {{3,23},{23,23},{3,23},{43,3}};
 		return this.cropSprites(cuts);
