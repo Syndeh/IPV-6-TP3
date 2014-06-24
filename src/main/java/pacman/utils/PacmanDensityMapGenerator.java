@@ -10,11 +10,11 @@ import com.uqbar.vainilla.appearances.Sprite;
 import com.uqbar.vainilla.utils.ClassLoaderResourcesProvider;
 import com.uqbar.vainilla.utils.ResourceProvider;
 
-public class PacmanTerrainGenerator {
+public class PacmanDensityMapGenerator {
 
 	
 	private Color[][] terrainGrid;
-	private int cellSize = 40;
+	private int cellSize = 1;
 	private int width;
 	private int height;
 	private int rows;
@@ -25,7 +25,7 @@ public class PacmanTerrainGenerator {
 	
 	public static ResourceProvider defaultResourceProvider = new ClassLoaderResourcesProvider();
 
-	public PacmanTerrainGenerator(PacmanImageMapParser mapParser, int height, int width, int cols, int rows) {
+	public PacmanDensityMapGenerator(PacmanImageMapParser mapParser, int height, int width, int cols, int rows) {
 		this.terrainGrid = mapParser.getTerrainGrid();
 		this.cols = cols;
 		this.rows = rows;
@@ -34,7 +34,7 @@ public class PacmanTerrainGenerator {
 		
 		this.terrainAllowedColors.add(Color.BLACK);
 		this.terrainAllowedColors.add(new Color(-16767233));
-		this.cellSize = this.width / this.rows;
+//		this.cellSize = this.width / this.rows;
 	}
 	
 	public Sprite getSprite() {
@@ -48,21 +48,21 @@ public class PacmanTerrainGenerator {
 			Graphics graphics = image.getGraphics();
 			
 			Color terrainColor;
-			
+			cellSize = 1;
 			for (int i = 0; i < terrainGrid.length; i++) {
 				int x = i * this.cellSize;
 				for (int j = 0; j < terrainGrid[0].length; j++) {
 					int y = j * cellSize;
 					terrainColor = terrainGrid[i][j];
 					System.out.println(terrainColor.getRGB());
-					if( terrainAllowedColors.contains(terrainColor)) {
-						//if (terrainColor.equals(Color.BLACK)) {
-							graphics.setColor(terrainColor);
-							graphics.fillRect(y, x, this.cellSize, this.cellSize);
-						//} else {
-							//this.getWallImage(new Double(i, j));
-						//}
-					}
+					//if( terrainAllowedColors.contains(terrainColor)) {
+						if (terrainColor.equals(new Color(-16767233))) {
+							graphics.setColor(Color.BLACK);
+						} else {
+							graphics.setColor(Color.WHITE);
+						}
+						graphics.fillRect(y, x, this.cellSize, this.cellSize);
+					//}
 				}
 			}
 		} catch (Exception e) {

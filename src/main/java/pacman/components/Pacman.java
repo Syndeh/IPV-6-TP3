@@ -25,10 +25,9 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	public static final Vector2D DIRECTION_RIGHT = new Vector2D(1, 0);
 
 	public Pacman() {
-		super(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()
-				+ "LEFT"), 115*2, 181*2);
+		
 		this.setDirection(DIRECTION_RIGHT);
-
+		this.resetAppearance();
 	}
 
 	public void resetAppearance() {

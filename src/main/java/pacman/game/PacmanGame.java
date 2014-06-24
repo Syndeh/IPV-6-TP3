@@ -26,14 +26,14 @@ public class PacmanGame extends Game {
 
 	@Override
 	protected void setUpScenes() {
-		PacmanLevelScene scene = new PacmanLevelScene("mapa1.png");
+		PacmanLevelScene scene = new PacmanLevelScene();
 		this.setCurrentScene(scene);
 
 	}
 
 	@Override
 	public Dimension getDisplaySize() {
-		return new Dimension(460, 490);
+		return new Dimension(520, 680);
 
 	}
 
