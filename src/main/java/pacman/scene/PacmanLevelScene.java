@@ -52,10 +52,10 @@ public class PacmanLevelScene extends GraphGameScene {
 	
 	
 	
-	private void initializeBackground() {
-		GameComponent<GameScene> background = new GameComponent<GameScene>(Sprite.fromImage("images/cleanmap.png").scale(2),0 ,0);
-		this.addComponent(background);
-	}
+//	private void initializeBackground() {
+//		GameComponent<GameScene> background = new GameComponent<GameScene>(Sprite.fromImage("images/cleanmap.png").scale(2),0 ,0);
+//		this.addComponent(background);
+//	}
 
 	public Ghost getGhost() {
 		return ghost;
@@ -81,7 +81,7 @@ public class PacmanLevelScene extends GraphGameScene {
 	protected void initializeComponents() {
 		initializeScenary();
 		initializePacman();
-//		initializePills();
+		initializePills();
 		initializeGhosts();
 	}
 

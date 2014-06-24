@@ -29,15 +29,15 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 		MapGraph<Valuable> mapGraph = this.getScene().getMapGraph();
 		if(this.canMove())
 		{
-			Node<Valuable> source = mapGraph.obtainNode((int)this.getY()/2,(int)this.getX()/2);
+			Node<Valuable> source = mapGraph.obtainNode((int)this.getY()/40,(int)this.getX()/40);
 			Node<Valuable> destination = this.getScene().getPacmanPosition();
 			List<Node<Valuable>> path = mapGraph.getShortestPath(source, destination);
 			if(path!=null && path.size()>0)
 			{
 				source.setMinDistance(Double.POSITIVE_INFINITY);
 				source.setPrevious(null);
-				this.setX(path.get(0).getColumn() * 2);
-				this.setY(path.get(0).getRow()*2);
+				this.setX(path.get(0).getColumn() * 40);
+				this.setY(path.get(0).getRow() * 40);
 				path.get(0).setMinDistance(Double.POSITIVE_INFINITY);
 				path.get(0).setPrevious(null);
 			}

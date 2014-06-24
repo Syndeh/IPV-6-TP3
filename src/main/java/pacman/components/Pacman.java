@@ -16,8 +16,8 @@ import com.uqbar.vainilla.utils.Vector2D;
 public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	private Vector2D direction;
-	private int row = 181;
-	private int column = 115;
+	private int row = 0;
+	private int column = 0;
 	private double waitingTime = 0;
 	public static final Vector2D DIRECTION_UP = new Vector2D(0,-1);
 	public static final Vector2D DIRECTION_DOWN = new Vector2D(0, 1);
@@ -57,16 +57,18 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	}
 
 	private void doMovement(DeltaState deltaState) {
-
-		if(this.canMove() && this.getWaitingTime()>1){
+		
+		if( this.canMove() && this.getWaitingTime()>1 ){
+		//if( this.canMove() ){
 			this.column = this.column + (int)this.direction.getX();
 			this.row = this.row + (int)this.direction.getY();
-			this.setX(this.column*2);
-			this.setY(this.row*2);
+			this.setX(this.column*40);
+			this.setY(this.row*40);
 			this.getScene().setPacmanRow(this.row);
 			this.getScene().setPacmanColumn(this.column);
 			this.setWaitingTime(0);
-		}else{
+		}
+		else{
 			this.increaseWaitingTime(deltaState.getDelta());
 		}
 	}
