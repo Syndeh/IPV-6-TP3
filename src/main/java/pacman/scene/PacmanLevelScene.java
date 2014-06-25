@@ -1,12 +1,17 @@
 package pacman.scene;
 
+import java.awt.Point;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
+import java.util.List;
+
 import pacman.components.Ghost;
 import pacman.components.Pacman;
 import pacman.components.Pill;
 //import pacman.components.Scenary;
 //import pacman.utils.PacmanImageMapParser;
+
+
 
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
@@ -34,9 +39,22 @@ public class PacmanLevelScene extends GraphGameScene {
 		this.initializeBackground();
 		this.addComponent(this.getGhost());
 		this.addComponent(new Pacman());
-		
+		this.addPills();
 	}
 	
+	private void addPills() {
+
+		List<Point> pillsPositions = this.getMapGraph().getColorsMap().get(3584);
+		for (Point pillPosition : pillsPositions) {
+			Pill pill =  new Pill();
+			pill.setX(pillPosition.getX() * 2);
+			pill.setY(pillPosition.getY() * 2);
+			this.addComponent(pill);
+		}
+		
+	}
+
+
 	private void initializeBackground() {
 		GameComponent<GameScene> background = new GameComponent<GameScene>(Sprite.fromImage("images/cleanmap.png").scale(2),0 ,0);
 		this.addComponent(background);
