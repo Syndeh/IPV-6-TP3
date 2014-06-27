@@ -11,6 +11,9 @@ import pacman.components.Pill;
 
 
 
+import pacman.ghostmovements.rules.SmartMovement;
+import pacman.ghostmovements.rules.SlowMovement;
+
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
 import com.uqbar.vainilla.GraphGameScene;
@@ -20,7 +23,6 @@ import com.uqbar.vainilla.graphs.Valuable;
 
 public class PacmanLevelScene extends GraphGameScene {
 
-	private Ghost ghost = new Ghost();
 	private int pacmanColumn = 114;
 	private int pacmanRow = 230;
 	private Pacman pacman = new Pacman();
@@ -35,9 +37,22 @@ public class PacmanLevelScene extends GraphGameScene {
 	@Override
 	protected void initializeComponents() {
 		this.initializeBackground();
-		this.addComponent(this.getGhost());
+		this.addSmartGhost();
+		//this.addStupidGhost();
 		this.addComponent(new Pacman());
 		this.addPills();
+	}
+	
+	private void addSmartGhost() {
+		Ghost smartGhost = new Ghost();
+		smartGhost.setMovementRule(new SmartMovement());
+		this.addComponent(smartGhost);
+	}
+
+	private void addStupidGhost() {
+		Ghost stupidGhost = new Ghost();
+		stupidGhost.setMovementRule(new SlowMovement());
+		this.addComponent(stupidGhost);
 	}
 	
 	private void addPills() {
@@ -56,14 +71,6 @@ public class PacmanLevelScene extends GraphGameScene {
 	private void initializeBackground() {
 		GameComponent<GameScene> background = new GameComponent<GameScene>(Sprite.fromImage("images/cleanmap.png").scale(2),0 ,0);
 		this.addComponent(background);
-	}
-
-	public Ghost getGhost() {
-		return ghost;
-	}
-
-	public void setGhost(Ghost ghost) {
-		this.ghost = ghost;
 	}
 
 	public Node<Valuable> getPacmanPosition() {
