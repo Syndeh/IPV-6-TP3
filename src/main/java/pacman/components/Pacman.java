@@ -60,7 +60,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	private void doMovement(DeltaState deltaState) {
 
 		if(this.canMove() && this.getWaitingTime()>1){
-			this.column = this.column + (int)this.direction.getX();
+			this.column = this.obtainNextCol();
 			this.row = this.row + (int)this.direction.getY();
 			this.setX(this.column*2);
 			this.setY(this.row*2);
@@ -70,6 +70,17 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 		}else{
 			this.increaseWaitingTime(deltaState.getDelta());
 		}
+	}
+
+	private int obtainNextCol() {
+		Node<Valuable> node = this.getScene().getMapGraph().obtainNode(this.getRow(), this.getColumn());
+		if(this.getDirection().equals(DIRECTION_LEFT)){
+			return (int)node.getLeftAdjacency().getColumn();
+		}
+		if(this.getDirection().equals(DIRECTION_RIGHT)){
+			return (int)node.getRightAdjacency().getColumn();
+		}
+		return this.getColumn();
 	}
 
 	private boolean canMove() {
