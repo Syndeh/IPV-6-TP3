@@ -1,15 +1,14 @@
 package pacman.components;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.Stack;
+
 import pacman.ghostmovements.rules.Movement;
-import java.util.List;
 import pacman.scene.PacmanLevelScene;
 import pacman.utils.SpriteManager;
 
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
+import com.uqbar.vainilla.utils.Vector2D;
 
 public class Ghost extends AIComponent<PacmanLevelScene> {
 	
@@ -17,6 +16,8 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	private Movement movementRule;
 	private int velocity = 50;
 	private String name;
+	private Point previousPosition = new Point();
+	private Vector2D direction;
 	
 	public Ghost(){}
 	
@@ -30,6 +31,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 		super.update(deltaState);
 		if(this.canMove())
 		{
+			this.getPreviousPosition().setLocation((int)this.getX(), (int)this.getY());
 			this.getMovementRule().move(this);
 			this.setWaitingTime(0);
 			
@@ -75,6 +77,14 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 
 	public void setVelocity(int velocity) {
 		this.velocity = velocity;
+	}
+
+	public Point getPreviousPosition() {
+		return previousPosition;
+	}
+
+	public void setPreviousPosition(Point previousPosition) {
+		this.previousPosition = previousPosition;
 	}
 	
 	

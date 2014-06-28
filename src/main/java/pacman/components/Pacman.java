@@ -1,5 +1,7 @@
 package pacman.components;
 
+import java.awt.Point;
+
 import pacman.scene.PacmanLevelScene;
 import pacman.utils.SpriteManager;
 
@@ -23,6 +25,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	public static final Vector2D DIRECTION_DOWN = new Vector2D(0, 1);
 	public static final Vector2D DIRECTION_LEFT = new Vector2D(-1, 0);
 	public static final Vector2D DIRECTION_RIGHT = new Vector2D(1, 0);
+	private Point previousPosition = new Point();
 
 	public Pacman() {
 		super(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()
@@ -57,14 +60,20 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	}
 
 	private void doMovement(DeltaState deltaState) {
-		if (this.canMove() && this.getWaitingTime() > 1) {
-			this.column = this.obtainNextCol();
-			this.row = this.row + (int) this.direction.getY();
-			this.setX(this.column * 2);
-			this.setY(this.row * 2);
-			this.getScene().setPacmanRow(this.row);
-			this.getScene().setPacmanColumn(this.column);
-			this.setWaitingTime(0);
+		if (this.getWaitingTime() > 1) {
+			if(this.canMove()){
+				this.column = this.obtainNextCol();
+				this.getPreviousPosition().setLocation((int)this.getColumn(), (int)this.getRow());
+				this.row = this.row + (int) this.direction.getY();
+				this.setX(this.column * 2);
+				this.setY(this.row * 2);
+
+				this.getScene().setPacmanRow(this.row);
+				this.getScene().setPacmanColumn(this.column);
+				this.setWaitingTime(0);
+			}else{
+				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(28, 28));
+			}
 		} else {
 //			averiguar en que momento se queda parado contra la pared
 //			SpriteManager.INSTANCE.getCroppedPacmanSprite(473,34, 13, 13);
@@ -72,6 +81,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 		}
 	}
 	
+
 	private void eatPill() {
 		for (Pill pill : this.getScene().getPills()) {
 			if (this.canEatPill(pill)) {
@@ -186,5 +196,11 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	public void setColumn(int column) {
 		this.column = column;
 	}
+	public Point getPreviousPosition() {
+		return previousPosition;
+	}
 
+	public void setPreviousPosition(Point previousPosition) {
+		this.previousPosition = previousPosition;
+	}
 }
