@@ -75,8 +75,6 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(28, 28));
 			}
 		} else {
-//			averiguar en que momento se queda parado contra la pared
-//			SpriteManager.INSTANCE.getCroppedPacmanSprite(473,34, 13, 13);
 			this.increaseWaitingTime(deltaState.getDelta());
 		}
 	}

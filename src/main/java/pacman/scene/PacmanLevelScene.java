@@ -8,9 +8,8 @@ import pacman.components.Ghost;
 import pacman.components.Pacman;
 import pacman.components.Pill;
 import pacman.components.PointsCounter;
-
 import pacman.ghostmovements.rules.SmartMovement;
-import pacman.ghostmovements.rules.SlowMovement;
+import pacman.ghostmovements.rules.StupidMovement;
 
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
@@ -55,7 +54,7 @@ public class PacmanLevelScene extends GraphGameScene {
 
 	private void addStupidGhost() {
 		Ghost stupidGhost = new Ghost();
-		stupidGhost.setMovementRule(new SlowMovement());
+		stupidGhost.setMovementRule(new StupidMovement());
 		this.addComponent(stupidGhost);
 	}
 	private void addCounter() {
@@ -64,18 +63,28 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 
 	private void addGhosts() {
-		this.createGhost(3584,"Blinky");
+		this.createSmartGhost(3584,"Blinky");
+		this.createStupiGhost(3584, "Blinky");
 //		createGhost(rosa,"Pinky");
 //		createGhost(celeste,"Inky");
 //		createGhost(naranja,"Clyde");
 	}
 
-	private void createGhost(int color, String name) {
+	private void createSmartGhost(int color, String name) {
 		Point position = this.getMapGraph().getColorsMap().get(color).get(0);
 		Ghost ghost = new Ghost(name);
 		ghost.setX(position.getX());
 		ghost.setY(position.getY());
 		ghost.setMovementRule(new SmartMovement());
+		this.addComponent(ghost);
+		this.ghosts.add(ghost);
+	}
+	private void createStupiGhost(int color, String name) {
+		Point position = this.getMapGraph().getColorsMap().get(color).get(0);
+		Ghost ghost = new Ghost(name);
+		ghost.setX(108*2);
+		ghost.setY(112*2);
+		ghost.setMovementRule(new StupidMovement());
 		this.addComponent(ghost);
 		this.ghosts.add(ghost);
 	}

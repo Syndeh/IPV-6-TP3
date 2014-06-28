@@ -17,7 +17,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	private int velocity = 50;
 	private String name;
 	private Point previousPosition = new Point();
-	private Vector2D direction;
+	private Vector2D direction = new Vector2D(0, -1);
 	
 	public Ghost(){}
 	
@@ -25,14 +25,24 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 		super(SpriteManager.INSTANCE.getCroppedPacmanSprite(457, 65, 14, 14).scale(2),108*2,112*2);
 		this.name = name;
 	}
+	
+	public void changeDirection(int column, int row){
+		int x = (int)this.getX() - column;
+		int y = (int)this.getY() - row;
+		this.setDirection(new Vector2D(x/2, y/2));
+	}
 
 	@Override
 	public void update(DeltaState deltaState) {
 		super.update(deltaState);
 		if(this.canMove())
 		{
-			this.getPreviousPosition().setLocation((int)this.getX(), (int)this.getY());
+			int row = (int)this.getY();
+			int col = (int)this.getX();
+			
 			this.getMovementRule().move(this);
+			this.getPreviousPosition().setLocation(row, col);
+			this.changeDirection(col, row);
 			this.setWaitingTime(0);
 			
 		}else{
@@ -85,6 +95,14 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 
 	public void setPreviousPosition(Point previousPosition) {
 		this.previousPosition = previousPosition;
+	}
+
+	public Vector2D getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Vector2D direction) {
+		this.direction = direction;
 	}
 	
 	
