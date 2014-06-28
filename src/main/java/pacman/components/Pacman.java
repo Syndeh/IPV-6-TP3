@@ -7,6 +7,7 @@ import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Animation;
 import com.uqbar.vainilla.appearances.Appearance;
+import com.uqbar.vainilla.colissions.CollisionDetector;
 import com.uqbar.vainilla.events.constants.Key;
 import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
@@ -72,7 +73,16 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	}
 	
 	private void eatPill() {
-//		CollisionDetector.INSTANCE.collidesCircleAgainstRect(cx, cy, cratio, rx, ry, rwidth, rheight)
+		for (Pill pill : this.getScene().getPills()) {
+			if (this.canEatPill(pill)) {
+				this.getScene().removePill(pill);
+				break;
+			}
+		}
+	}
+
+	private boolean canEatPill(Pill pill) {
+		return CollisionDetector.INSTANCE.collidesCircleAgainstRect(pill.getX(), pill.getY(), 10, this.getX(),this.getY(), this.getAppearance().getWidth(), this.getAppearance().getHeight());
 	}
 
 	private int obtainNextCol() {
@@ -105,24 +115,16 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	private void changeDirection(DeltaState deltaState) {
 		if (this.getWaitingTime() > 1) {
-			if (deltaState.isKeyBeingHold(Key.UP)
-					&& !this.getDirection().equals(DIRECTION_UP)
-					&& !this.checkUpCollision()) {
+			if (deltaState.isKeyBeingHold(Key.UP) && !this.getDirection().equals(DIRECTION_UP) && !this.checkUpCollision()) {
 				this.setDirection(DIRECTION_UP);
 				this.resetAppearance();
-			} else if (deltaState.isKeyBeingHold(Key.DOWN)
-					&& !this.getDirection().equals(DIRECTION_DOWN)
-					&& !this.checkDownCollision()) {
+			} else if (deltaState.isKeyBeingHold(Key.DOWN) && !this.getDirection().equals(DIRECTION_DOWN) && !this.checkDownCollision()) {
 				this.setDirection(DIRECTION_DOWN);
 				this.resetAppearance();
-			} else if (deltaState.isKeyBeingHold(Key.LEFT)
-					&& !this.getDirection().equals(DIRECTION_LEFT)
-					&& !this.checkLeftCollision()) {
+			} else if (deltaState.isKeyBeingHold(Key.LEFT) && !this.getDirection().equals(DIRECTION_LEFT) && !this.checkLeftCollision()) {
 				this.setDirection(DIRECTION_LEFT);
 				this.resetAppearance();
-			} else if (deltaState.isKeyBeingHold(Key.RIGHT)
-					&& !this.getDirection().equals(DIRECTION_RIGHT)
-					&& !this.checkRightCollision()) {
+			} else if (deltaState.isKeyBeingHold(Key.RIGHT) && !this.getDirection().equals(DIRECTION_RIGHT) && !this.checkRightCollision()) {
 				this.setDirection(DIRECTION_RIGHT);
 				this.resetAppearance();
 			}
@@ -130,33 +132,27 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	}
 
 	private boolean checkUpCollision() {
-		Node<Valuable> currentNode = this.getScene().getMapGraph()
-				.obtainNode(this.row, this.column);
+		Node<Valuable> currentNode = this.getScene().getMapGraph().obtainNode(this.row, this.column);
 		return !currentNode.isHasUpAdjacency();
 	}
 
 	private boolean checkDownCollision() {
-
-		Node<Valuable> currentNode = this.getScene().getMapGraph()
-				.obtainNode(this.row, this.column);
+		Node<Valuable> currentNode = this.getScene().getMapGraph().obtainNode(this.row, this.column);
 		return !currentNode.isHasDownAdjacency();
 	}
 
 	private boolean checkRightCollision() {
-		Node<Valuable> currentNode = this.getScene().getMapGraph()
-				.obtainNode(this.row, this.column);
+		Node<Valuable> currentNode = this.getScene().getMapGraph().obtainNode(this.row, this.column);
 		return !currentNode.isHasRightAdjacency();
 	}
 
 	private boolean checkLeftCollision() {
-		Node<Valuable> currentNode = this.getScene().getMapGraph()
-				.obtainNode(this.row, this.column);
+		Node<Valuable> currentNode = this.getScene().getMapGraph().obtainNode(this.row, this.column);
 		return !currentNode.isHasLeftAdjacency();
 	}
 
 	private void increaseWaitingTime(double delta) {
 		this.setWaitingTime(this.getWaitingTime() + delta * 120);
-
 	}
 
 	protected double getWaitingTime() {
