@@ -1,15 +1,13 @@
 package pacman.scene;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import pacman.components.Ghost;
 import pacman.components.Pacman;
 import pacman.components.Pill;
-//import pacman.components.Scenary;
-//import pacman.utils.PacmanImageMapParser;
-
-
+import pacman.components.PointsCounter;
 
 import pacman.ghostmovements.rules.SmartMovement;
 import pacman.ghostmovements.rules.SlowMovement;
@@ -20,27 +18,33 @@ import com.uqbar.vainilla.GraphGameScene;
 import com.uqbar.vainilla.appearances.Sprite;
 import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
+import com.uqbar.vainilla.sound.Sound;
+import com.uqbar.vainilla.sound.SoundBuilder;
 
 public class PacmanLevelScene extends GraphGameScene {
 
+	private List<Ghost> ghosts;
 	private int pacmanColumn = 114;
 	private int pacmanRow = 230;
 	private Pacman pacman = new Pacman();
-	
-	
+	private List<Pill> pills;
+	private PointsCounter counter;
+	private Sound pillSound = new SoundBuilder().buildSound("/sounds/pacman_chomp.wav");
 	
 	public PacmanLevelScene(String map) {
 		super(map);
+		this.pills = new ArrayList<Pill>();
+		this.ghosts = new ArrayList<Ghost>();
 	}
 	
-
 	@Override
 	protected void initializeComponents() {
 		this.initializeBackground();
-		this.addSmartGhost();
 		//this.addStupidGhost();
 		this.addComponent(new Pacman());
+		this.addGhosts();
 		this.addPills();
+		this.addCounter();
 	}
 	
 	private void addSmartGhost() {
@@ -54,34 +58,80 @@ public class PacmanLevelScene extends GraphGameScene {
 		stupidGhost.setMovementRule(new SlowMovement());
 		this.addComponent(stupidGhost);
 	}
-	
-	private void addPills() {
+	private void addCounter() {
+		this.counter = new PointsCounter();
+		this.addComponent(this.counter);
+	}
 
+	private void addGhosts() {
+		this.createGhost(3584,"Blinky");
+//		createGhost(rosa,"Pinky");
+//		createGhost(celeste,"Inky");
+//		createGhost(naranja,"Clyde");
+	}
+
+	private void createGhost(int color, String name) {
+		Point position = this.getMapGraph().getColorsMap().get(color).get(0);
+		Ghost ghost = new Ghost(name);
+		ghost.setX(position.getX());
+		ghost.setY(position.getY());
+		ghost.setMovementRule(new SmartMovement());
+		this.addComponent(ghost);
+		this.ghosts.add(ghost);
+	}
+
+	private void addPills() {
 		List<Point> pillsPositions = this.getMapGraph().getColorsMap().get(3584);
 		for (Point pillPosition : pillsPositions) {
 			Pill pill =  new Pill();
 			pill.setX(pillPosition.getX() * 2);
 			pill.setY(pillPosition.getY() * 2);
 			this.addComponent(pill);
+			this.pills.add(pill);
 		}
-		
 	}
 
+	public void removePill(Pill pill) {
+		this.pills.remove(pill);
+		pill.destroy();
+		this.pillSound.play();
+		this.addPoints();
+		this.checkWin();
+	}
+	
+	private void checkWin() {
+		// TODO SI gano cambiar de escena
+//		pills.isEmpty()
+	}
 
+	public void addPoints() {
+		this.counter.addPoints(100);
+	}
+	
 	private void initializeBackground() {
 		GameComponent<GameScene> background = new GameComponent<GameScene>(Sprite.fromImage("images/cleanmap.png").scale(2),0 ,0);
 		this.addComponent(background);
 	}
 
-	public Node<Valuable> getPacmanPosition() {
-		return this.getMapGraph().obtainNode(this.getPacmanRow(),this.getPacmanColumn());
+
+	public List<Pill> getPills() {
+		return this.pills;
 	}
 
-	public void changePacmanPosition() {
-		
-		this.pacmanRow=10;
-		this.pacmanColumn=10;
-		
+	public void setPills(List<Pill> pills) {
+		this.pills = pills;
+	}
+	
+	public List<Ghost> getGhosts() {
+		return this.ghosts;
+	}
+
+	public void setGhosts(List<Ghost> ghosts) {
+		this.ghosts = ghosts;
+	}
+
+	public Node<Valuable> getPacmanPosition() {
+		return this.getMapGraph().obtainNode(this.getPacmanRow(),this.getPacmanColumn());
 	}
 
 //	private Pacman pacman;
@@ -104,12 +154,12 @@ public class PacmanLevelScene extends GraphGameScene {
 //		initializeGhosts();
 //	}
 
-	private void initializeScenary() {
+//	private void initializeScenary() {
 //		this.scenary = new Scenary(this.getGame().getDisplayHeight(), this.getGame().getDisplayWidth(), this.getMapParser().getHeight(), this.getMapParser().getWidth());
 //		this.addComponent(this.scenary);
-	}
+//	}
 
-	private void initializePills() {
+//	private void initializePills() {
 //		Pill pill;
 //		ArrayList<Double> spawnPoints = this.getMapParser().getPillsSpawnPoints();
 //		for (Double spawnPoint : spawnPoints) {
@@ -118,9 +168,9 @@ public class PacmanLevelScene extends GraphGameScene {
 //			pill.setPosition(spawnPoint);
 //			this.addPill(pill);
 //		}
-	}
+//	}
 
-	private void initializeGhosts() {
+//	private void initializeGhosts() {
 //		Ghost ghost;
 //		ArrayList<Double> spawnPoints = this.getMapParser().getEnemySpawnPoints();
 //		for (Double spawnPoint : spawnPoints) {
@@ -129,65 +179,36 @@ public class PacmanLevelScene extends GraphGameScene {
 //			ghost.setPosition(spawnPoint);
 //			this.addGhost(ghost);
 //		}
-	}
+//	}
 
-	private void initializePacman() {
+//	private void initializePacman() {
 //		this.pacman = new Pacman();
 //		Double spawnPosition = this.scenary.getScenaryPosition(this.getMapParser().getPacmanSpawnPosition());
 //		pacman.setPosition(spawnPosition);
 //		this.addComponent(this.pacman);
-	}
-
+//	}
 
 	public Pacman getPacman() {
-		return pacman;
+		return this.pacman;
 	}
-
 
 	public void setPacman(Pacman pacman) {
 		this.pacman = pacman;
 	}
 
-
 	public int getPacmanColumn() {
-		return pacmanColumn;
+		return this.pacmanColumn;
 	}
-
 
 	public void setPacmanColumn(int pacmanColumn) {
 		this.pacmanColumn = pacmanColumn;
 	}
 
-
 	public int getPacmanRow() {
-		return pacmanRow;
+		return this.pacmanRow;
 	}
-
 
 	public void setPacmanRow(int pacmanRow) {
 		this.pacmanRow = pacmanRow;
 	}
-
-	// ------------------------------------------
-	// Getters & Setters
-	// ------------------------------------------
-	
-//	private void addPill(Pill pill) {
-//		this.addComponent(pill);
-//		this.pills.add(pill);
-//	}
-//	
-//	private void addGhost(Ghost ghost) {
-//		this.addComponent(ghost);
-//		this.ghosts.add(ghost);
-//	}
-	
-//	public PacmanImageMapParser getMapParser() {
-//		return mapParser;
-//	}
-//
-//	private void setMapParser(PacmanImageMapParser mapParser) {
-//		this.mapParser = mapParser;
-//	}
-
 }
