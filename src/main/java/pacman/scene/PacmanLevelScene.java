@@ -1,15 +1,12 @@
 package pacman.scene;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import pacman.components.Ghost;
 import pacman.components.Pacman;
 import pacman.components.Pill;
-//import pacman.components.Scenary;
-//import pacman.utils.PacmanImageMapParser;
-
-
 
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
@@ -17,6 +14,8 @@ import com.uqbar.vainilla.GraphGameScene;
 import com.uqbar.vainilla.appearances.Sprite;
 import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
+//import pacman.components.Scenary;
+//import pacman.utils.PacmanImageMapParser;
 
 public class PacmanLevelScene extends GraphGameScene {
 
@@ -24,11 +23,12 @@ public class PacmanLevelScene extends GraphGameScene {
 	private int pacmanColumn = 114;
 	private int pacmanRow = 230;
 	private Pacman pacman = new Pacman();
-	
+	private List<Pill> pills;
 	
 	
 	public PacmanLevelScene(String map) {
 		super(map);
+		this.pills = new ArrayList<Pill>();
 	}
 	
 
@@ -41,13 +41,13 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 	
 	private void addPills() {
-
 		List<Point> pillsPositions = this.getMapGraph().getColorsMap().get(3584);
 		for (Point pillPosition : pillsPositions) {
 			Pill pill =  new Pill();
 			pill.setX(pillPosition.getX() * 2);
 			pill.setY(pillPosition.getY() * 2);
 			this.addComponent(pill);
+			this.pills.add(pill);
 		}
 		
 	}
@@ -59,7 +59,7 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 
 	public Ghost getGhost() {
-		return ghost;
+		return this.ghost;
 	}
 
 	public void setGhost(Ghost ghost) {
@@ -133,7 +133,7 @@ public class PacmanLevelScene extends GraphGameScene {
 
 
 	public Pacman getPacman() {
-		return pacman;
+		return this.pacman;
 	}
 
 
@@ -143,7 +143,7 @@ public class PacmanLevelScene extends GraphGameScene {
 
 
 	public int getPacmanColumn() {
-		return pacmanColumn;
+		return this.pacmanColumn;
 	}
 
 
@@ -153,7 +153,7 @@ public class PacmanLevelScene extends GraphGameScene {
 
 
 	public int getPacmanRow() {
-		return pacmanRow;
+		return this.pacmanRow;
 	}
 
 
