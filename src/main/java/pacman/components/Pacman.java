@@ -14,6 +14,8 @@ import com.uqbar.vainilla.colissions.CollisionDetector;
 import com.uqbar.vainilla.events.constants.Key;
 import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
+import com.uqbar.vainilla.sound.Sound;
+import com.uqbar.vainilla.sound.SoundBuilder;
 import com.uqbar.vainilla.utils.Vector2D;
 
 public class Pacman extends GameComponent<PacmanLevelScene> {
@@ -28,7 +30,9 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	public static final Vector2D DIRECTION_RIGHT = new Vector2D(1, 0);
 	private Point previousPosition = new Point();
 	private boolean isAlive = true;
-
+	private Sound collisionSound = new SoundBuilder().buildSound("/sounds/pacman_chomp.wav");
+	private Sound deathSound = new SoundBuilder().buildSound("/sounds/pacman_death.wav");
+	
 	public Pacman() {
 		super(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()
 				+ "LEFT"), 115 * 2, 181 * 2); // = 230 , 362 ?? 
@@ -47,6 +51,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 			this.eatPill();
 			super.update(deltaState);
 		}else{
+			this.deathSound.play(1);
 			this.getGame().setCurrentScene(new GameOverScene());
 		}
 	}
@@ -89,6 +94,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	private void eatPill() {
 		for (Pill pill : this.getScene().getPills()) {
 			if (this.canEatPill(pill)) {
+				this.getCollisionSound().play(1);
 				this.getScene().removePill(pill);
 				break;
 			}
@@ -214,5 +220,13 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	public void setAlive(boolean isAlive) {
 		this.isAlive = isAlive;
+	}
+
+	public Sound getCollisionSound() {
+		return collisionSound;
+	}
+
+	public void setCollisionSound(Sound collisionSound) {
+		this.collisionSound = collisionSound;
 	}
 }
