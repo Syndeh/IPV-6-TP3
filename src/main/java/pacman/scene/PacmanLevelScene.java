@@ -40,9 +40,9 @@ public class PacmanLevelScene extends GraphGameScene {
 	protected void initializeComponents() {
 		this.initializeBackground();
 		//this.addStupidGhost();
-		this.addComponent(new Pacman());
-		this.addGhosts();
+		this.addComponent(this.getPacman());
 		this.addPills();
+		this.addGhosts();
 		this.addCounter();
 	}
 	

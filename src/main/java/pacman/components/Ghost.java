@@ -35,6 +35,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	@Override
 	public void update(DeltaState deltaState) {
 		super.update(deltaState);
+		this.checkPacmanCollision();
 		if(this.canMove())
 		{
 			int row = (int)this.getY();
@@ -47,6 +48,15 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 			
 		}else{
 			this.increaseWaitingTime(deltaState.getDelta());
+		}
+	}
+
+	private void checkPacmanCollision() {
+		int pacmanColumn = this.getScene().getPacmanColumn();
+		int pacmanRow = this.getScene().getPacmanRow();
+		if(pacmanColumn==(int)this.getX()/2 && pacmanRow==(int)this.getY()/2)
+		{
+			this.getScene().getPacman().setAlive(false);
 		}
 	}
 

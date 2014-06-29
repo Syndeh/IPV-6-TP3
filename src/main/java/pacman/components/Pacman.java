@@ -2,6 +2,7 @@ package pacman.components;
 
 import java.awt.Point;
 
+import pacman.scene.GameOverScene;
 import pacman.scene.PacmanLevelScene;
 import pacman.utils.SpriteManager;
 
@@ -26,6 +27,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	public static final Vector2D DIRECTION_LEFT = new Vector2D(-1, 0);
 	public static final Vector2D DIRECTION_RIGHT = new Vector2D(1, 0);
 	private Point previousPosition = new Point();
+	private boolean isAlive = true;
 
 	public Pacman() {
 		super(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()
@@ -39,10 +41,14 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	@Override
 	public void update(DeltaState deltaState) {
-		this.changeDirection(deltaState);
-		this.doMovement(deltaState);
-		this.eatPill();
-		super.update(deltaState);
+		if(this.isAlive()){
+			this.changeDirection(deltaState);
+			this.doMovement(deltaState);
+			this.eatPill();
+			super.update(deltaState);
+		}else{
+			this.getGame().setCurrentScene(new GameOverScene());
+		}
 	}
 
 	private Appearance getDefaultAppearance() {
@@ -200,5 +206,13 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	public void setPreviousPosition(Point previousPosition) {
 		this.previousPosition = previousPosition;
+	}
+
+	public boolean isAlive() {
+		return isAlive;
+	}
+
+	public void setAlive(boolean isAlive) {
+		this.isAlive = isAlive;
 	}
 }
