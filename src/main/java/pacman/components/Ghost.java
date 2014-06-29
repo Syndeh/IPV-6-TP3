@@ -9,19 +9,20 @@ import pacman.utils.SpriteManager;
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.appearances.Animation;
-import com.uqbar.vainilla.appearances.Sprite;
 import com.uqbar.vainilla.colissions.CollisionDetector;
+import com.uqbar.vainilla.utils.ResourceUtil;
 import com.uqbar.vainilla.utils.Vector2D;
 
 public class Ghost extends AIComponent<PacmanLevelScene> {
 	private static final Vector2D DIRECTION_UP = new Vector2D(0, -1);
 	private static final Vector2D DIRECTION_DOWN = new Vector2D(0, 1);
-	private static final Vector2D DIRECTION_LEFT = new Vector2D(-1, 0);
 	private static final Vector2D DIRECTION_RIGHT = new Vector2D(1, 0);
+	private static final int SCALEFACTOR = ResourceUtil.getResourceInt("Pacman.SCALEFACTOR");
+	private static final double ANIMATIONMEANTIME = ResourceUtil.getResourceDouble("Ghost.ANIMATION.MEANTIME");
 
 	private double waitingTime = 0;
 	private Movement movementRule;
-	private int velocity = 50;
+	private int velocity = ResourceUtil.getResourceInt("Ghost.Velocity");
 	private String name;
 	private Point previousPosition = new Point();
 	private Vector2D direction = new Vector2D(0, -1);
@@ -29,14 +30,14 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	public Ghost(){}
 	
 	public Ghost(String name) {
-		super(SpriteManager.INSTANCE.getCroppedPacmanSprite(457, 65, 14, 14).scale(2),108*2,112*2);
+		super(SpriteManager.INSTANCE.getCroppedPacmanSprite(457, 65, 14, 14).scale(SCALEFACTOR),108*SCALEFACTOR,112*SCALEFACTOR);
 		this.name = name;
 	}
 	
 	public void changeDirection(int column, int row){
 		int x = (int)this.getX() - column;
 		int y = (int)this.getY() - row;
-		Vector2D newDirection = new Vector2D(x/2, y/2);
+		Vector2D newDirection = new Vector2D(x/SCALEFACTOR, y/SCALEFACTOR);
 		if(!newDirection.equals(this.getDirection())){
 			this.setDirection(newDirection);
 			this.setNewAppearence();
@@ -46,13 +47,13 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	private void setNewAppearence() {
 		Animation animation;
 		if(this.getDirection().equals(DIRECTION_UP)){
-			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyUP());
+			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyUP());
 		}else if(this.getDirection().equals(DIRECTION_RIGHT)){
-			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyRIGHT());
+			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyRIGHT());
 		}else if(this.getDirection().equals(DIRECTION_DOWN)){
-			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyDOWN());
+			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyDOWN());
 		}else{
-			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyLEFT());
+			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyLEFT());
 		}
 		this.setAppearance(animation);
 	}
@@ -89,7 +90,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	}
 
 	private void increaseWaitingTime(double delta) {
-		this.setWaitingTime(this.getWaitingTime()+delta*this.getVelocity());
+		this.setWaitingTime(this.getWaitingTime() + delta * this.getVelocity());
 	}
 
 	private boolean canMove() {
