@@ -8,6 +8,7 @@ import pacman.utils.SpriteManager;
 
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
+import com.uqbar.vainilla.colissions.CollisionDetector;
 import com.uqbar.vainilla.utils.Vector2D;
 
 public class Ghost extends AIComponent<PacmanLevelScene> {
@@ -52,10 +53,16 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	}
 
 	private void checkPacmanCollision() {
-		int pacmanColumn = this.getScene().getPacmanColumn();
-		int pacmanRow = this.getScene().getPacmanRow();
-		if(pacmanColumn==(int)this.getX()/2 && pacmanRow==(int)this.getY()/2)
-		{
+		
+		 if(CollisionDetector
+				.INSTANCE
+				.collidesCircleAgainstCircle(this.getScene().getPacman().getX(),
+											this.getScene().getPacman().getY(), 
+											14,
+											this.getX(), 
+											this.getY(),
+											14)){
+		
 			this.getScene().getPacman().setAlive(false);
 		}
 	}
