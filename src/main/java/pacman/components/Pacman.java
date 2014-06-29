@@ -78,9 +78,6 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 				this.row = this.row + (int) this.direction.getY();
 				this.setX(this.column * 2);
 				this.setY(this.row * 2);
-
-				this.getScene().setPacmanRow(this.row);
-				this.getScene().setPacmanColumn(this.column);
 				this.setWaitingTime(0);
 			}else{
 				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(28, 28));

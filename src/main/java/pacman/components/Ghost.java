@@ -8,11 +8,17 @@ import pacman.utils.SpriteManager;
 
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
+import com.uqbar.vainilla.appearances.Animation;
+import com.uqbar.vainilla.appearances.Sprite;
 import com.uqbar.vainilla.colissions.CollisionDetector;
 import com.uqbar.vainilla.utils.Vector2D;
 
 public class Ghost extends AIComponent<PacmanLevelScene> {
-	
+	private static final Vector2D DIRECTION_UP = new Vector2D(0, -1);
+	private static final Vector2D DIRECTION_DOWN = new Vector2D(0, 1);
+	private static final Vector2D DIRECTION_LEFT = new Vector2D(-1, 0);
+	private static final Vector2D DIRECTION_RIGHT = new Vector2D(1, 0);
+
 	private double waitingTime = 0;
 	private Movement movementRule;
 	private int velocity = 50;
@@ -30,23 +36,38 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	public void changeDirection(int column, int row){
 		int x = (int)this.getX() - column;
 		int y = (int)this.getY() - row;
-		this.setDirection(new Vector2D(x/2, y/2));
+		Vector2D newDirection = new Vector2D(x/2, y/2);
+		if(!newDirection.equals(this.getDirection())){
+			this.setDirection(newDirection);
+			this.setNewAppearence();
+		}
+	}
+
+	private void setNewAppearence() {
+		Animation animation;
+		if(this.getDirection().equals(DIRECTION_UP)){
+			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyUP());
+		}else if(this.getDirection().equals(DIRECTION_RIGHT)){
+			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyRIGHT());
+		}else if(this.getDirection().equals(DIRECTION_DOWN)){
+			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyDOWN());
+		}else{
+			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyLEFT());
+		}
+		this.setAppearance(animation);
 	}
 
 	@Override
 	public void update(DeltaState deltaState) {
 		super.update(deltaState);
 		this.checkPacmanCollision();
-		if(this.canMove())
-		{
+		if(this.canMove()){
 			int row = (int)this.getY();
 			int col = (int)this.getX();
-			
 			this.getMovementRule().move(this);
 			this.getPreviousPosition().setLocation(row, col);
 			this.changeDirection(col, row);
 			this.setWaitingTime(0);
-			
 		}else{
 			this.increaseWaitingTime(deltaState.getDelta());
 		}

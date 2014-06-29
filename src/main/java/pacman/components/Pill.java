@@ -6,7 +6,6 @@ import pacman.scene.PacmanLevelScene;
 
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Circle;
-import com.uqbar.vainilla.appearances.Sprite;
 
 public class Pill extends GameComponent<PacmanLevelScene> {
 
