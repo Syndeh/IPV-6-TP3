@@ -14,7 +14,7 @@ public class GameOverScene extends GameScene{
 	}
 
 	private void initializeBackGround() {
-		GameComponent<GameScene> background = new GameComponent<GameScene>(Sprite.fromImage("images/killedpacman.jpg").crop(553, 301, 800, 500).scaleTo(461, 491),0 ,0);
+		GameComponent<GameScene> background = new GameComponent<GameScene>(Sprite.fromImage("images/killedpacman.jpg").crop(553, 301, 800, 500).scaleTo(461, 510),0 ,0);
 		this.addComponent(background);
 	}
 }

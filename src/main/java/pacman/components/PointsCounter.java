@@ -15,6 +15,7 @@ public class PointsCounter extends AbstractCounter<GameScene> {
 	public PointsCounter() {
 		this.points = 0;
 		this.setAppearance(new Label(new Font(Font.SANS_SERIF, Font.BOLD, 20), Color.YELLOW, "Puntos: " + this.getPoints()));
+		this.setY(490);
 	}
 
 	@Override
