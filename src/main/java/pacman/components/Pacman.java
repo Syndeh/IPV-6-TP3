@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import pacman.scene.GameOverScene;
 import pacman.scene.PacmanLevelScene;
+import pacman.utils.GlobalResources;
 import pacman.utils.SpriteManager;
 
 import com.uqbar.vainilla.DeltaState;
@@ -16,27 +17,27 @@ import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.sound.Sound;
 import com.uqbar.vainilla.sound.SoundBuilder;
+import com.uqbar.vainilla.utils.ResourceUtil;
 import com.uqbar.vainilla.utils.Vector2D;
 
 public class Pacman extends GameComponent<PacmanLevelScene> {
-
+	private static int WAITINGTIME = ResourceUtil.getResourceInt("Pacman.WAITINGTIME");
+	private static int WIDHT = ResourceUtil.getResourceInt("Pacman.WIDHT");
+	private static int HEIGHT = ResourceUtil.getResourceInt("Pacman.HEIGHT");
+	private static int WAITINGTIMEFACTOR = ResourceUtil.getResourceInt("Pacman.WAITINGTIMEFACTOR");
 	private Vector2D direction;
 	private int row = 181;
 	private int column = 115;
 	private double waitingTime = 0;
-	public static final Vector2D DIRECTION_UP = new Vector2D(0, -1);
-	public static final Vector2D DIRECTION_DOWN = new Vector2D(0, 1);
-	public static final Vector2D DIRECTION_LEFT = new Vector2D(-1, 0);
-	public static final Vector2D DIRECTION_RIGHT = new Vector2D(1, 0);
 	private Point previousPosition = new Point();
 	private boolean isAlive = true;
-	private Sound collisionSound = new SoundBuilder().buildSound("/sounds/pacman_chomp.wav");
-	private Sound deathSound = new SoundBuilder().buildSound("/sounds/pacman_death.wav");
+	private Sound collisionSound = new SoundBuilder().buildSound(ResourceUtil.getResourceString("Pacman.CHOMPSOUND"));
+	private Sound deathSound = new SoundBuilder().buildSound(ResourceUtil.getResourceString("Pacman.DEATHSOUND"));
 	
 	public Pacman() {
 		super(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()
 				+ "LEFT"), 115 * 2, 181 * 2); // = 230 , 362 ?? 
-		this.setDirection(DIRECTION_LEFT);
+		this.setDirection(GlobalResources.DIRECTION_LEFT);
 	}
 
 	public void resetAppearance() {
@@ -58,29 +59,29 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	private Appearance getDefaultAppearance() {
 		Animation animation = null;
-		if (this.getDirection().asVersor().equals(DIRECTION_UP)) {
+		if (this.getDirection().asVersor().equals(GlobalResources.DIRECTION_UP)) {
 			animation = SpriteManager.INSTANCE.getAnimation("PacmanUP");
-		} else if (this.getDirection().asVersor().equals(DIRECTION_DOWN)) {
+		} else if (this.getDirection().asVersor().equals(GlobalResources.DIRECTION_DOWN)) {
 			animation = SpriteManager.INSTANCE.getAnimation("PacmanDOWN");
-		} else if (this.getDirection().asVersor().equals(DIRECTION_RIGHT)) {
+		} else if (this.getDirection().asVersor().equals(GlobalResources.DIRECTION_RIGHT)) {
 			animation = SpriteManager.INSTANCE.getAnimation("PacmanRIGHT");
-		} else if (this.getDirection().asVersor().equals(DIRECTION_LEFT)) {
+		} else if (this.getDirection().asVersor().equals(GlobalResources.DIRECTION_LEFT)) {
 			animation = SpriteManager.INSTANCE.getAnimation("PacmanLEFT");
 		}
 		return animation;
 	}
 
 	private void doMovement(DeltaState deltaState) {
-		if (this.getWaitingTime() > 1) {
+		if (this.getWaitingTime() > WAITINGTIME) {
 			if(this.canMove()){
 				this.column = this.obtainNextCol();
 				this.getPreviousPosition().setLocation((int)this.getColumn(), (int)this.getRow());
 				this.row = this.row + (int) this.direction.getY();
-				this.setX(this.column * 2);
-				this.setY(this.row * 2);
+				this.setX(this.column * GlobalResources.SCALEFACTOR);
+				this.setY(this.row * GlobalResources.SCALEFACTOR);
 				this.setWaitingTime(0);
 			}else{
-				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(28, 28));
+				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(WIDHT, HEIGHT));
 			}
 		} else {
 			this.increaseWaitingTime(deltaState.getDelta());
@@ -99,16 +100,16 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	}
 
 	private boolean canEatPill(Pill pill) {
-		return CollisionDetector.INSTANCE.collidesCircleAgainstRect(pill.getX(), pill.getY(), 10, this.getX(),this.getY(), this.getAppearance().getWidth(), this.getAppearance().getHeight());
+		return CollisionDetector.INSTANCE.collidesCircleAgainstRect(pill.getX(), pill.getY(), 5, this.getX(),this.getY(), this.getAppearance().getWidth(), this.getAppearance().getHeight());
 	}
 
 	private int obtainNextCol() {
 		Node<Valuable> node = this.getScene().getMapGraph()
 				.obtainNode(this.getRow(), this.getColumn());
-		if (this.getDirection().equals(DIRECTION_LEFT)) {
+		if (this.getDirection().equals(GlobalResources.DIRECTION_LEFT)) {
 			return (int) node.getLeftAdjacency().getColumn();
 		}
-		if (this.getDirection().equals(DIRECTION_RIGHT)) {
+		if (this.getDirection().equals(GlobalResources.DIRECTION_RIGHT)) {
 			return (int) node.getRightAdjacency().getColumn();
 		}
 		return this.getColumn();
@@ -132,17 +133,17 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	private void changeDirection(DeltaState deltaState) {
 		if (this.getWaitingTime() > 1) {
-			if (deltaState.isKeyBeingHold(Key.UP) && !this.getDirection().equals(DIRECTION_UP) && !this.checkUpCollision()) {
-				this.setDirection(DIRECTION_UP);
+			if (deltaState.isKeyBeingHold(Key.UP) && !this.getDirection().equals(GlobalResources.DIRECTION_UP) && !this.checkUpCollision()) {
+				this.setDirection(GlobalResources.DIRECTION_UP);
 				this.resetAppearance();
-			} else if (deltaState.isKeyBeingHold(Key.DOWN) && !this.getDirection().equals(DIRECTION_DOWN) && !this.checkDownCollision()) {
-				this.setDirection(DIRECTION_DOWN);
+			} else if (deltaState.isKeyBeingHold(Key.DOWN) && !this.getDirection().equals(GlobalResources.DIRECTION_DOWN) && !this.checkDownCollision()) {
+				this.setDirection(GlobalResources.DIRECTION_DOWN);
 				this.resetAppearance();
-			} else if (deltaState.isKeyBeingHold(Key.LEFT) && !this.getDirection().equals(DIRECTION_LEFT) && !this.checkLeftCollision()) {
-				this.setDirection(DIRECTION_LEFT);
+			} else if (deltaState.isKeyBeingHold(Key.LEFT) && !this.getDirection().equals(GlobalResources.DIRECTION_LEFT) && !this.checkLeftCollision()) {
+				this.setDirection(GlobalResources.DIRECTION_LEFT);
 				this.resetAppearance();
-			} else if (deltaState.isKeyBeingHold(Key.RIGHT) && !this.getDirection().equals(DIRECTION_RIGHT) && !this.checkRightCollision()) {
-				this.setDirection(DIRECTION_RIGHT);
+			} else if (deltaState.isKeyBeingHold(Key.RIGHT) && !this.getDirection().equals(GlobalResources.DIRECTION_RIGHT) && !this.checkRightCollision()) {
+				this.setDirection(GlobalResources.DIRECTION_RIGHT);
 				this.resetAppearance();
 			}
 		}
@@ -169,7 +170,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	}
 
 	private void increaseWaitingTime(double delta) {
-		this.setWaitingTime(this.getWaitingTime() + delta * 120);
+		this.setWaitingTime(this.getWaitingTime() + delta * WAITINGTIMEFACTOR);
 	}
 
 	protected double getWaitingTime() {

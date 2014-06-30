@@ -1,11 +1,10 @@
 package pacman.components;
 
 import java.awt.Point;
-
 import pacman.ghostmovements.rules.Movement;
 import pacman.scene.PacmanLevelScene;
+import pacman.utils.GlobalResources;
 import pacman.utils.SpriteManager;
-
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.appearances.Animation;
@@ -14,10 +13,7 @@ import com.uqbar.vainilla.utils.ResourceUtil;
 import com.uqbar.vainilla.utils.Vector2D;
 
 public class Ghost extends AIComponent<PacmanLevelScene> {
-	private static final Vector2D DIRECTION_UP = new Vector2D(0, -1);
-	private static final Vector2D DIRECTION_DOWN = new Vector2D(0, 1);
-	private static final Vector2D DIRECTION_RIGHT = new Vector2D(1, 0);
-	private static final int SCALEFACTOR = ResourceUtil.getResourceInt("Pacman.SCALEFACTOR");
+
 	private static final double ANIMATIONMEANTIME = ResourceUtil.getResourceDouble("Ghost.ANIMATION.MEANTIME");
 
 	private double waitingTime = 0;
@@ -30,14 +26,14 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	public Ghost(){}
 	
 	public Ghost(String name) {
-		super(SpriteManager.INSTANCE.getCroppedPacmanSprite(457, 65, 14, 14).scale(SCALEFACTOR),108*SCALEFACTOR,112*SCALEFACTOR);
+		super(SpriteManager.INSTANCE.getCroppedPacmanSprite(457, 65, 14, 14).scale(GlobalResources.SCALEFACTOR),108 * GlobalResources.SCALEFACTOR,112 * GlobalResources.SCALEFACTOR);
 		this.name = name;
 	}
 	
 	public void changeDirection(int column, int row){
 		int x = (int)this.getX() - column;
 		int y = (int)this.getY() - row;
-		Vector2D newDirection = new Vector2D(x/SCALEFACTOR, y/SCALEFACTOR);
+		Vector2D newDirection = new Vector2D(x/GlobalResources.SCALEFACTOR, y/GlobalResources.SCALEFACTOR);
 		if(!newDirection.equals(this.getDirection())){
 			this.setDirection(newDirection);
 			this.setNewAppearence();
@@ -46,11 +42,11 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 
 	private void setNewAppearence() {
 		Animation animation;
-		if(this.getDirection().equals(DIRECTION_UP)){
+		if(this.getDirection().equals(GlobalResources.DIRECTION_UP)){
 			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyUP());
-		}else if(this.getDirection().equals(DIRECTION_RIGHT)){
+		}else if(this.getDirection().equals(GlobalResources.DIRECTION_RIGHT)){
 			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyRIGHT());
-		}else if(this.getDirection().equals(DIRECTION_DOWN)){
+		}else if(this.getDirection().equals(GlobalResources.DIRECTION_DOWN)){
 			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyDOWN());
 		}else{
 			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyLEFT());
