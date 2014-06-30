@@ -23,6 +23,7 @@ import com.uqbar.vainilla.utils.Vector2D;
 public class Pacman extends GameComponent<PacmanLevelScene> {
 	private static int WAITINGTIME = ResourceUtil.getResourceInt("Pacman.WAITINGTIME");
 	private static int WAITINGTIMEFACTOR = ResourceUtil.getResourceInt("Pacman.WAITINGTIMEFACTOR");
+	private final static String MAP = ResourceUtil.getResourceString("PacmanGame.MAP");
 	private Vector2D direction;
 	private int row = 181;
 	private int column = 115;
@@ -103,6 +104,13 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 				this.getCollisionSound().play(1);
 				this.getScene().removePill(pill);
 				break;
+			}
+		}
+		if(this.getScene().getPills().size()==0){
+			try {
+				this.getGame().setCurrentScene(new PacmanLevelScene(MAP));
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
