@@ -49,15 +49,10 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	@Override
 	public void update(DeltaState deltaState) {
-//		if(this.isAlive()){
 			this.changeDirection(deltaState);
 			this.doMovement(deltaState);
 			this.eatPill();
 			super.update(deltaState);
-//		}else{
-//			this.deathSound.play(1);
-//			this.getGame().setCurrentScene(new GameOverScene());
-//		}
 	}
 
 	private Appearance getDefaultAppearance() {

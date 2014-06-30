@@ -72,7 +72,6 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 
 	private void checkPacmanCollision() {
 		if(CollisionDetector.INSTANCE.collidesCircleAgainstCircle(this.getScene().getPacman().getX(),this.getScene().getPacman().getY(),12,this.getX(),this.getY(),12)){
-//			this.getScene().getPacman().setAlive(false);
 			this.getScene().killPacman();
 		}
 	}
