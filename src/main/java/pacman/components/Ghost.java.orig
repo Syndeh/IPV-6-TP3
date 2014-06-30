@@ -1,15 +1,16 @@
 package pacman.components;
 
 import java.awt.Point;
-
 import pacman.ghostmovements.rules.Movement;
 import pacman.scene.PacmanLevelScene;
 import pacman.utils.GlobalResources;
 import pacman.utils.SpriteManager;
-
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
+<<<<<<< HEAD
+=======
 import com.uqbar.vainilla.appearances.Animation;
+>>>>>>> 9c07bf1dece38ffd287a9bb8c0ea20e16ce58c4d
 import com.uqbar.vainilla.colissions.CollisionDetector;
 import com.uqbar.vainilla.utils.ResourceUtil;
 import com.uqbar.vainilla.utils.Vector2D;
@@ -28,6 +29,10 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	public Ghost(){}
 	
 	public Ghost(String name) {
+<<<<<<< HEAD
+=======
+		super(SpriteManager.INSTANCE.getCroppedPacmanSprite(457, 65, 14, 14).scale(GlobalResources.SCALEFACTOR),108 * GlobalResources.SCALEFACTOR,112 * GlobalResources.SCALEFACTOR);
+>>>>>>> 9c07bf1dece38ffd287a9bb8c0ea20e16ce58c4d
 		this.name = name;
 		this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"UP"));
 	}
@@ -43,14 +48,26 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	}
 
 	private void setNewAppearence() {
-		if(this.getDirection().equals(GlobalResources.DIRECTION_UP)){
+<<<<<<< HEAD
+		if(this.getDirection().equals(DIRECTION_UP)){
 			this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"UP"));
-		}else if(this.getDirection().equals(GlobalResources.DIRECTION_RIGHT)){
+		}else if(this.getDirection().equals(DIRECTION_RIGHT)){
 			this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"RIGHT"));
-		}else if(this.getDirection().equals(GlobalResources.DIRECTION_DOWN)){
+		}else if(this.getDirection().equals(DIRECTION_DOWN)){
 			this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"DOWN"));
-		}else if(this.getDirection().equals(GlobalResources.DIRECTION_LEFT)){
+		}else if(this.getDirection().equals(DIRECTION_LEFT)){
 			this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"LEFT"));
+=======
+		Animation animation;
+		if(this.getDirection().equals(GlobalResources.DIRECTION_UP)){
+			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyUP());
+		}else if(this.getDirection().equals(GlobalResources.DIRECTION_RIGHT)){
+			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyRIGHT());
+		}else if(this.getDirection().equals(GlobalResources.DIRECTION_DOWN)){
+			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyDOWN());
+		}else{
+			animation = new Animation(ANIMATIONMEANTIME, SpriteManager.INSTANCE.getGhostBlinkyLEFT());
+>>>>>>> 9c07bf1dece38ffd287a9bb8c0ea20e16ce58c4d
 		}
 	}
 

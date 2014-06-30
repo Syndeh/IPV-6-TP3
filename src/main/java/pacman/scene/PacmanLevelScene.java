@@ -12,6 +12,7 @@ import pacman.components.Pill;
 import pacman.components.PointsCounter;
 import pacman.ghostmovements.rules.SmartMovement;
 import pacman.ghostmovements.rules.StupidMovement;
+import pacman.utils.GlobalResources;
 
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
@@ -23,9 +24,11 @@ import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.sound.Sound;
 import com.uqbar.vainilla.sound.SoundBuilder;
 import com.uqbar.vainilla.utils.ClassLoaderResourcesProvider;
+import com.uqbar.vainilla.utils.ResourceUtil;
 
 public class PacmanLevelScene extends GraphGameScene {
 
+	private final static String CLEANMAP = ResourceUtil.getResourceString("PacmanLevelScene.CLEANMAP");
 	private List<Ghost> ghosts;
 	private Pacman pacman = new Pacman();
 	private List<Pill> pills;
@@ -89,8 +92,8 @@ public class PacmanLevelScene extends GraphGameScene {
 		List<Point> pillsPositions = this.getMapGraph().getColorsMap().get(3584);
 		for (Point pillPosition : pillsPositions) {
 			Pill pill =  new Pill();
-			pill.setX(pillPosition.getX() * 2);
-			pill.setY(pillPosition.getY() * 2);
+			pill.setX(pillPosition.getX() * GlobalResources.SCALEFACTOR);
+			pill.setY(pillPosition.getY() * GlobalResources.SCALEFACTOR);
 			this.addComponent(pill);
 			this.pills.add(pill);
 		}
@@ -114,7 +117,7 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 	
 	private void initializeBackground() {
-		GameComponent<GameScene> background = new GameComponent<GameScene>(Sprite.fromImage("images/cleanmap.png").scale(2),0 ,0);
+		GameComponent<GameScene> background = new GameComponent<GameScene>(Sprite.fromImage(CLEANMAP).scale(GlobalResources.SCALEFACTOR),0 ,0);
 		this.addComponent(background);
 	}
 

@@ -2,7 +2,6 @@ package pacman.game;
 
 import java.awt.Dimension;
 
-
 import pacman.scene.PacmanLevelScene;
 
 import com.uqbar.vainilla.DesktopGameLauncher;
@@ -32,12 +31,16 @@ public class PacmanGame extends Game {
 
 	@Override
 	protected void setUpScenes() {
+<<<<<<< HEAD
 		PacmanLevelScene scene = null;
 		try {
-			scene = new PacmanLevelScene(MAP);
+			scene = new PacmanLevelScene("images/mapa1.png");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+=======
+		PacmanLevelScene scene = new PacmanLevelScene(MAP);
+>>>>>>> 9c07bf1dece38ffd287a9bb8c0ea20e16ce58c4d
 		this.setCurrentScene(scene);
 	}
 

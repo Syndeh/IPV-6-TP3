@@ -35,8 +35,14 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	private Sound deathSound = new SoundBuilder().buildSound(ResourceUtil.getResourceString("Pacman.DEATHSOUND"));
 	
 	public Pacman() {
-		this.setDirection(GlobalResources.DIRECTION_LEFT);
+<<<<<<< HEAD
+		this.setDirection(DIRECTION_LEFT);
 		this.setAppearance(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()+ "LEFT"));
+=======
+		super(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()
+				+ "LEFT"), 115 * 2, 181 * 2); // = 230 , 362 ?? 
+		this.setDirection(GlobalResources.DIRECTION_LEFT);
+>>>>>>> 9c07bf1dece38ffd287a9bb8c0ea20e16ce58c4d
 	}
 
 	public void resetAppearance() {
@@ -74,14 +80,18 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 		if (this.getWaitingTime() > WAITINGTIME) {
 			if(this.canMove()){
 				this.column = this.obtainNextCol();
-				this.getPreviousPosition().setLocation((int)this.getColumn(), (int)this.getRow());
+				this.getPreviousPosition().setLocation(this.getColumn(), this.getRow());
 				this.row = this.row + (int) this.direction.getY();
 				this.setX(this.column * GlobalResources.SCALEFACTOR);
 				this.setY(this.row * GlobalResources.SCALEFACTOR);
 				this.setWaitingTime(0);
 			}else{
+<<<<<<< HEAD
 //				baja el frame rate porque esta seteando la apariencia a cada rato
-//				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(WIDHT, HEIGHT);
+//				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(28, 28));
+=======
+				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(WIDHT, HEIGHT));
+>>>>>>> 9c07bf1dece38ffd287a9bb8c0ea20e16ce58c4d
 			}
 		} else {
 			this.increaseWaitingTime(deltaState.getDelta());
