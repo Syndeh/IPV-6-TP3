@@ -71,8 +71,6 @@ public class PacmanLevelScene extends GraphGameScene {
 	private void createSmartGhost(int color, String name) {
 		Point position = this.getMapGraph().getColorsMap().get(color).get(0);
 		Ghost ghost = new Ghost(name, position);
-//		ghost.setX((position.getX())+1 * 2);
-//		ghost.setY((position.getY())+1 * 2);
 		ghost.setMovementRule(new SmartMovement());
 		this.addComponent(ghost);
 		this.ghosts.add(ghost);
@@ -80,8 +78,6 @@ public class PacmanLevelScene extends GraphGameScene {
 	private void createStupiGhost(int color, String name) {
 		Point position = this.getMapGraph().getColorsMap().get(color).get(0);
 		Ghost ghost = new Ghost(name,position);
-//		ghost.setX((position.getX() +1)* 2);
-//		ghost.setY((position.getY() +1) * 2);
 		ghost.setMovementRule(new StupidMovement());
 		this.addComponent(ghost);
 		this.ghosts.add(ghost);
