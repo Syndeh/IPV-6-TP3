@@ -3,8 +3,6 @@ package pacman.ghostmovements.rules;
 import com.uqbar.vainilla.graphs.MapGraph;
 import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
-import com.uqbar.vainilla.utils.Vector2D;
-
 import pacman.components.Ghost;
 import pacman.utils.GlobalResources;
 
