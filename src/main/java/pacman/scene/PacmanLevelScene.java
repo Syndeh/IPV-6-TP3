@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import pacman.components.Ghost;
 import pacman.components.Pacman;
 import pacman.components.Pill;
@@ -15,10 +17,12 @@ import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.GameScene;
 import com.uqbar.vainilla.GraphGameScene;
 import com.uqbar.vainilla.appearances.Sprite;
+import com.uqbar.vainilla.graphs.MapGraph;
 import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.sound.Sound;
 import com.uqbar.vainilla.sound.SoundBuilder;
+import com.uqbar.vainilla.utils.ClassLoaderResourcesProvider;
 
 public class PacmanLevelScene extends GraphGameScene {
 
@@ -28,8 +32,8 @@ public class PacmanLevelScene extends GraphGameScene {
 	private PointsCounter counter;
 	private Sound pillSound = new SoundBuilder().buildSound("/sounds/pacman_chomp.wav");
 	
-	public PacmanLevelScene(String map) {
-		super(map);
+	public PacmanLevelScene(String map) throws Exception {
+		this.setMapGraph(new MapGraph<Valuable>(ImageIO.read(new ClassLoaderResourcesProvider().getResource(map))));
 		this.pills = new ArrayList<Pill>();
 		this.ghosts = new ArrayList<Ghost>();
 	}
@@ -37,12 +41,18 @@ public class PacmanLevelScene extends GraphGameScene {
 	@Override
 	protected void initializeComponents() {
 		this.initializeBackground();
-		this.addComponent(this.getPacman());
+		this.addPacman();
 		this.addPills();
 		this.addGhosts();
 		this.addCounter();
 	}
 	
+	private void addPacman() {
+		this.addComponent(this.pacman);
+		Point position = this.getMapGraph().getColorsMap().get(16711936).get(0);
+		this.pacman.setX((position.getX())+1 * 2);
+		this.pacman.setY((position.getY())+1 * 2);
+	}
 
 	private void addCounter() {
 		this.counter = new PointsCounter();
@@ -50,26 +60,26 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 
 	private void addGhosts() {
-		this.createSmartGhost(3584,"Blinky");
-		this.createStupiGhost(3584, "Blinky");
-//		createGhost(rosa,"Pinky");
-//		createGhost(celeste,"Inky");
-//		createGhost(naranja,"Clyde");
+//		this.createSmartGhost(65536,"Blinky");
+		this.createStupiGhost(65281, "Pinky");
+		this.createStupiGhost(16711681, "Inky");
+		this.createStupiGhost(32768, "Clyde");
 	}
 
 	private void createSmartGhost(int color, String name) {
 		Point position = this.getMapGraph().getColorsMap().get(color).get(0);
 		Ghost ghost = new Ghost(name);
-		ghost.setX(position.getX());
-		ghost.setY(position.getY());
+		ghost.setX((position.getX())+1 * 2);
+		ghost.setY((position.getY())+1 * 2);
 		ghost.setMovementRule(new SmartMovement());
 		this.addComponent(ghost);
 		this.ghosts.add(ghost);
 	}
 	private void createStupiGhost(int color, String name) {
+		Point position = this.getMapGraph().getColorsMap().get(color).get(0);
 		Ghost ghost = new Ghost(name);
-		ghost.setX(108*2);
-		ghost.setY(112*2);
+		ghost.setX((position.getX() +1)* 2);
+		ghost.setY((position.getY() +1) * 2);
 		ghost.setMovementRule(new StupidMovement());
 		this.addComponent(ghost);
 		this.ghosts.add(ghost);
@@ -108,7 +118,6 @@ public class PacmanLevelScene extends GraphGameScene {
 		this.addComponent(background);
 	}
 
-
 	public List<Pill> getPills() {
 		return this.pills;
 	}
@@ -126,10 +135,8 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 
 	public Node<Valuable> getPacmanPosition() {
-		return this.getMapGraph().obtainNode((int)this.getPacman().getRow(),(int)this.getPacman().getColumn());
+		return this.getMapGraph().obtainNode(this.getPacman().getRow(),this.getPacman().getColumn());
 	}
-
-
 
 	public Pacman getPacman() {
 		return this.pacman;
@@ -138,6 +145,4 @@ public class PacmanLevelScene extends GraphGameScene {
 	public void setPacman(Pacman pacman) {
 		this.pacman = pacman;
 	}
-
-
 }

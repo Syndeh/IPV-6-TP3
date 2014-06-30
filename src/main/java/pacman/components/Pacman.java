@@ -34,9 +34,8 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	private Sound deathSound = new SoundBuilder().buildSound("/sounds/pacman_death.wav");
 	
 	public Pacman() {
-		super(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()
-				+ "LEFT"), 115 * 2, 181 * 2); // = 230 , 362 ?? 
 		this.setDirection(DIRECTION_LEFT);
+		this.setAppearance(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()+ "LEFT"));
 	}
 
 	public void resetAppearance() {
@@ -74,19 +73,19 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 		if (this.getWaitingTime() > 1) {
 			if(this.canMove()){
 				this.column = this.obtainNextCol();
-				this.getPreviousPosition().setLocation((int)this.getColumn(), (int)this.getRow());
+				this.getPreviousPosition().setLocation(this.getColumn(), this.getRow());
 				this.row = this.row + (int) this.direction.getY();
 				this.setX(this.column * 2);
 				this.setY(this.row * 2);
 				this.setWaitingTime(0);
 			}else{
-				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(28, 28));
+//				baja el frame rate porque esta seteando la apariencia a cada rato
+//				this.setAppearance(SpriteManager.INSTANCE.getCroppedPacmanSprite(489,1, 13, 13).scaleTo(28, 28));
 			}
 		} else {
 			this.increaseWaitingTime(deltaState.getDelta());
 		}
 	}
-	
 
 	private void eatPill() {
 		for (Pill pill : this.getScene().getPills()) {
@@ -204,7 +203,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 		this.column = column;
 	}
 	public Point getPreviousPosition() {
-		return previousPosition;
+		return this.previousPosition;
 	}
 
 	public void setPreviousPosition(Point previousPosition) {
@@ -212,7 +211,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	}
 
 	public boolean isAlive() {
-		return isAlive;
+		return this.isAlive;
 	}
 
 	public void setAlive(boolean isAlive) {
@@ -220,7 +219,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	}
 
 	public Sound getCollisionSound() {
-		return collisionSound;
+		return this.collisionSound;
 	}
 
 	public void setCollisionSound(Sound collisionSound) {

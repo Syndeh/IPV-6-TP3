@@ -8,8 +8,6 @@ import pacman.utils.SpriteManager;
 
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
-import com.uqbar.vainilla.appearances.Animation;
-import com.uqbar.vainilla.appearances.Sprite;
 import com.uqbar.vainilla.colissions.CollisionDetector;
 import com.uqbar.vainilla.utils.Vector2D;
 
@@ -29,8 +27,8 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	public Ghost(){}
 	
 	public Ghost(String name) {
-		super(SpriteManager.INSTANCE.getCroppedPacmanSprite(457, 65, 14, 14).scale(2),108*2,112*2);
 		this.name = name;
+		this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"UP"));
 	}
 	
 	public void changeDirection(int column, int row){
@@ -44,17 +42,15 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	}
 
 	private void setNewAppearence() {
-		Animation animation;
 		if(this.getDirection().equals(DIRECTION_UP)){
-			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyUP());
+			this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"UP"));
 		}else if(this.getDirection().equals(DIRECTION_RIGHT)){
-			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyRIGHT());
+			this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"RIGHT"));
 		}else if(this.getDirection().equals(DIRECTION_DOWN)){
-			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyDOWN());
-		}else{
-			animation = new Animation(0.8, SpriteManager.INSTANCE.getGhostBlinkyLEFT());
+			this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"DOWN"));
+		}else if(this.getDirection().equals(DIRECTION_LEFT)){
+			this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"LEFT"));
 		}
-		this.setAppearance(animation);
 	}
 
 	@Override
@@ -112,7 +108,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 		this.waitingTime = waitingTime;
 	}
 	public Movement getMovementRule() {
-		return movementRule;
+		return this.movementRule;
 	}
 
 	public void setMovementRule(Movement movementRule) {
@@ -120,7 +116,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	}
 
 	public int getVelocity() {
-		return velocity;
+		return this.velocity;
 	}
 
 	public void setVelocity(int velocity) {
@@ -128,7 +124,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	}
 
 	public Point getPreviousPosition() {
-		return previousPosition;
+		return this.previousPosition;
 	}
 
 	public void setPreviousPosition(Point previousPosition) {
@@ -136,7 +132,7 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	}
 
 	public Vector2D getDirection() {
-		return direction;
+		return this.direction;
 	}
 
 	public void setDirection(Vector2D direction) {
