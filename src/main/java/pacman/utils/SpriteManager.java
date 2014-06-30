@@ -1,6 +1,7 @@
 package pacman.utils;
 
 import com.uqbar.vainilla.appearances.Animation;
+import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Sprite;
 
 public class SpriteManager {
@@ -130,5 +131,9 @@ public class SpriteManager {
 	public Sprite[] getGhostBlinkyRIGHT() {
 		int[][] cuts = { { 457, 65 }, { 473, 65 }, { 457, 65 }, { 473, 65 } };
 		return this.cropSprites(cuts, 14, 14);
+	}
+
+	public Appearance getCounterImage() {
+		return this.getCroppedPacmanSprite(473, 17, 13, 13);
 	}
 }

@@ -6,6 +6,7 @@ import pacman.ghostmovements.rules.Movement;
 import pacman.scene.PacmanLevelScene;
 import pacman.utils.GlobalResources;
 import pacman.utils.SpriteManager;
+
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.colissions.CollisionDetector;
@@ -70,17 +71,9 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	}
 
 	private void checkPacmanCollision() {
-		
-		 if(CollisionDetector
-				.INSTANCE
-				.collidesCircleAgainstCircle(this.getScene().getPacman().getX(),
-											this.getScene().getPacman().getY(), 
-											14,
-											this.getX(), 
-											this.getY(),
-											14)){
-		
-			this.getScene().getPacman().setAlive(false);
+		if(CollisionDetector.INSTANCE.collidesCircleAgainstCircle(this.getScene().getPacman().getX(),this.getScene().getPacman().getY(),12,this.getX(),this.getY(),12)){
+//			this.getScene().getPacman().setAlive(false);
+			this.getScene().killPacman();
 		}
 	}
 

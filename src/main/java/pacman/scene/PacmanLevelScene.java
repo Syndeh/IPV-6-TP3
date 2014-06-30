@@ -1,12 +1,14 @@
 package pacman.scene;
 
 import java.awt.Point;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import pacman.components.Ghost;
+import pacman.components.LifeCounter;
 import pacman.components.Pacman;
 import pacman.components.Pill;
 import pacman.components.PointsCounter;
@@ -29,18 +31,30 @@ import com.uqbar.vainilla.utils.ResourceUtil;
 public class PacmanLevelScene extends GraphGameScene {
 
 	private final static String CLEANMAP = ResourceUtil.getResourceString("PacmanLevelScene.CLEANMAP");
+	private final static String MAP = ResourceUtil.getResourceString("PacmanGame.MAP");
+	private final Sound deathSound = new SoundBuilder().buildSound(ResourceUtil.getResourceString("Pacman.DEATHSOUND"));
 	private List<Ghost> ghosts;
 	private Pacman pacman;
 	private List<Pill> pills;
 	private PointsCounter counter;
-	private Sound pillSound = new SoundBuilder().buildSound("/sounds/pacman_chomp.wav");
+	private List<LifeCounter> lives;
+	private final Sound pillSound = new SoundBuilder().buildSound("/sounds/pacman_chomp.wav");
 	
 	public PacmanLevelScene(String map) throws Exception {
 		this.setMapGraph(new MapGraph<Valuable>(ImageIO.read(new ClassLoaderResourcesProvider().getResource(map))));
 		this.pills = new ArrayList<Pill>();
 		this.ghosts = new ArrayList<Ghost>();
+		this.lives = new ArrayList<LifeCounter>();
 	}
 	
+	public PacmanLevelScene(String map, List<Pill> pills,List<LifeCounter> lives, PointsCounter counter) throws IOException, Exception {
+		this.setMapGraph(new MapGraph<Valuable>(ImageIO.read(new ClassLoaderResourcesProvider().getResource(map))));
+		this.pills = pills;
+		this.ghosts = new ArrayList<Ghost>();
+		this.lives = lives;
+		this.counter = counter;
+	}
+
 	@Override
 	protected void initializeComponents() {
 		this.initializeBackground();
@@ -48,6 +62,7 @@ public class PacmanLevelScene extends GraphGameScene {
 		this.addPills();
 		this.addGhosts();
 		this.addCounter();
+		this.addLifes();
 	}
 	
 	private void addPacman() {
@@ -57,7 +72,9 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 
 	private void addCounter() {
-		this.counter = new PointsCounter();
+		if(this.counter == null){
+			this.counter = new PointsCounter();
+		}
 		this.addComponent(this.counter);
 	}
 
@@ -84,31 +101,69 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 
 	private void addPills() {
-		List<Point> pillsPositions = this.getMapGraph().getColorsMap().get(3584);
-		for (Point pillPosition : pillsPositions) {
-			Pill pill =  new Pill();
-			pill.setX(pillPosition.getX() * GlobalResources.SCALEFACTOR);
-			pill.setY(pillPosition.getY() * GlobalResources.SCALEFACTOR);
-			this.addComponent(pill);
-			this.pills.add(pill);
+		if(this.pills.isEmpty()){
+			List<Point> pillsPositions = this.getMapGraph().getColorsMap().get(3584);
+			for (Point pillPosition : pillsPositions) {
+				Pill pill =  new Pill();
+				pill.setX(pillPosition.getX() * GlobalResources.SCALEFACTOR);
+				pill.setY(pillPosition.getY() * GlobalResources.SCALEFACTOR);
+				this.addComponent(pill);
+				this.pills.add(pill);
+			}
+		}else{
+			for (Pill pill : this.pills) {
+				this.addComponent(pill);
+			}
 		}
 	}
 
 	public void removePill(Pill pill) {
 		this.pills.remove(pill);
 		pill.destroy();
-		this.pillSound.play();
+		this.pillSound.play(new Float(0.5));
 		this.addPoints();
 		this.checkWin();
 	}
 	
 	private void checkWin() {
-		// TODO SI gano cambiar de escena
-//		pills.isEmpty()
+		if(this.pills.isEmpty()){
+			try {
+				this.getGame().setCurrentScene(new PacmanLevelScene(MAP,new ArrayList<Pill>(),this.getLives(),this.counter));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
-
+	
+	private void addLifes() {
+		if(this.lives.isEmpty()){
+			for (Point point : this.getMapGraph().getColorsMap().get(16744448)) {
+				LifeCounter live = new LifeCounter(point);
+				this.addComponent(live);
+				this.getLives().add(live);
+			}
+		}else
+			for (LifeCounter life : this.lives) {
+				this.addComponent(life);
+			}
+	}
+	
+	public void killPacman() {
+		this.deathSound.play(1);
+		if(this.lives.size() > 1){
+			try {
+				this.getLives().remove(0);
+				this.getGame().setCurrentScene(new PacmanLevelScene(MAP,this.getPills(),this.getLives(),this.counter));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else{
+			this.getGame().setCurrentScene(new GameOverScene());
+		}
+	}
+	
 	public void addPoints() {
-		this.counter.addPoints(100);
+		this.counter.addPoints(10);
 	}
 	
 	private void initializeBackground() {
@@ -142,5 +197,13 @@ public class PacmanLevelScene extends GraphGameScene {
 
 	public void setPacman(Pacman pacman) {
 		this.pacman = pacman;
+	}
+
+	public List<LifeCounter> getLives() {
+		return this.lives;
+	}
+
+	public void setLives(List<LifeCounter> lives) {
+		this.lives = lives;
 	}
 }

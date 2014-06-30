@@ -2,7 +2,6 @@ package pacman.components;
 
 import java.awt.Point;
 
-import pacman.scene.GameOverScene;
 import pacman.scene.PacmanLevelScene;
 import pacman.utils.GlobalResources;
 import pacman.utils.SpriteManager;
@@ -15,23 +14,18 @@ import com.uqbar.vainilla.colissions.CollisionDetector;
 import com.uqbar.vainilla.events.constants.Key;
 import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
-import com.uqbar.vainilla.sound.Sound;
-import com.uqbar.vainilla.sound.SoundBuilder;
 import com.uqbar.vainilla.utils.ResourceUtil;
 import com.uqbar.vainilla.utils.Vector2D;
 
 public class Pacman extends GameComponent<PacmanLevelScene> {
 	private static int WAITINGTIME = ResourceUtil.getResourceInt("Pacman.WAITINGTIME");
 	private static int WAITINGTIMEFACTOR = ResourceUtil.getResourceInt("Pacman.WAITINGTIMEFACTOR");
-	private final static String MAP = ResourceUtil.getResourceString("PacmanGame.MAP");
 	private Vector2D direction;
 	private int row = 181;
 	private int column = 115;
 	private double waitingTime = 0;
 	private Point previousPosition = new Point();
 	private boolean isAlive = true;
-	private Sound collisionSound = new SoundBuilder().buildSound(ResourceUtil.getResourceString("Pacman.CHOMPSOUND"));
-	private Sound deathSound = new SoundBuilder().buildSound(ResourceUtil.getResourceString("Pacman.DEATHSOUND"));
 	
 	public Pacman() {
 		super();
@@ -55,15 +49,15 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	@Override
 	public void update(DeltaState deltaState) {
-		if(this.isAlive()){
+//		if(this.isAlive()){
 			this.changeDirection(deltaState);
 			this.doMovement(deltaState);
 			this.eatPill();
 			super.update(deltaState);
-		}else{
-			this.deathSound.play(1);
-			this.getGame().setCurrentScene(new GameOverScene());
-		}
+//		}else{
+//			this.deathSound.play(1);
+//			this.getGame().setCurrentScene(new GameOverScene());
+//		}
 	}
 
 	private Appearance getDefaultAppearance() {
@@ -84,7 +78,7 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 		if (this.getWaitingTime() > WAITINGTIME) {
 			if(this.canMove()){
 				this.column = this.obtainNextCol();
-				this.getPreviousPosition().setLocation((int)this.getColumn(), (int)this.getRow());
+				this.getPreviousPosition().setLocation(this.getColumn(), this.getRow());
 				this.row = this.row + (int) this.direction.getY();
 				this.setX(this.column * GlobalResources.SCALEFACTOR);
 				this.setY(this.row * GlobalResources.SCALEFACTOR);
@@ -101,16 +95,8 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	private void eatPill() {
 		for (Pill pill : this.getScene().getPills()) {
 			if (this.canEatPill(pill)) {
-				this.getCollisionSound().play(1);
 				this.getScene().removePill(pill);
 				break;
-			}
-		}
-		if(this.getScene().getPills().size()==0){
-			try {
-				this.getGame().setCurrentScene(new PacmanLevelScene(MAP));
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 	}
@@ -234,13 +220,5 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 
 	public void setAlive(boolean isAlive) {
 		this.isAlive = isAlive;
-	}
-
-	public Sound getCollisionSound() {
-		return this.collisionSound;
-	}
-
-	public void setCollisionSound(Sound collisionSound) {
-		this.collisionSound = collisionSound;
 	}
 }
