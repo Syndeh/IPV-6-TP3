@@ -6,17 +6,14 @@ import pacman.ghostmovements.rules.Movement;
 import pacman.scene.PacmanLevelScene;
 import pacman.utils.GlobalResources;
 import pacman.utils.SpriteManager;
-
 import com.uqbar.vainilla.AIComponent;
 import com.uqbar.vainilla.DeltaState;
-import com.uqbar.vainilla.appearances.Animation;
 import com.uqbar.vainilla.colissions.CollisionDetector;
 import com.uqbar.vainilla.utils.ResourceUtil;
 import com.uqbar.vainilla.utils.Vector2D;
 
 public class Ghost extends AIComponent<PacmanLevelScene> {
 
-	private static final double ANIMATIONMEANTIME = ResourceUtil.getResourceDouble("Ghost.ANIMATION.MEANTIME");
 
 	private double waitingTime = 0;
 	private Movement movementRule;
@@ -27,9 +24,11 @@ public class Ghost extends AIComponent<PacmanLevelScene> {
 	
 	public Ghost(){}
 	
-	public Ghost(String name) {
+	public Ghost(String name, Point position) {
+		super(SpriteManager.INSTANCE.getAnimation("Ghost"+name+"UP")
+				,position.getX() * GlobalResources.SCALEFACTOR,
+				(position.getY()+1) * GlobalResources.SCALEFACTOR);
 		this.name = name;
-		this.setAppearance(SpriteManager.INSTANCE.getAnimation("Ghost"+this.getName()+"UP"));
 	}
 	
 	public void changeDirection(int column, int row){

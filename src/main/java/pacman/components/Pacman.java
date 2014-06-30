@@ -22,8 +22,6 @@ import com.uqbar.vainilla.utils.Vector2D;
 
 public class Pacman extends GameComponent<PacmanLevelScene> {
 	private static int WAITINGTIME = ResourceUtil.getResourceInt("Pacman.WAITINGTIME");
-	private static int WIDHT = ResourceUtil.getResourceInt("Pacman.WIDHT");
-	private static int HEIGHT = ResourceUtil.getResourceInt("Pacman.HEIGHT");
 	private static int WAITINGTIMEFACTOR = ResourceUtil.getResourceInt("Pacman.WAITINGTIMEFACTOR");
 	private Vector2D direction;
 	private int row = 181;
@@ -35,8 +33,19 @@ public class Pacman extends GameComponent<PacmanLevelScene> {
 	private Sound deathSound = new SoundBuilder().buildSound(ResourceUtil.getResourceString("Pacman.DEATHSOUND"));
 	
 	public Pacman() {
+		super();
 		this.setDirection(GlobalResources.DIRECTION_LEFT);
 		this.setAppearance(SpriteManager.INSTANCE.getAnimation(Pacman.class.getSimpleName()+ "LEFT"));
+	}
+	
+	public Pacman(Point position){
+		super(SpriteManager.INSTANCE.getAnimation(
+				Pacman.class.getSimpleName()+ "LEFT"),
+				position.getX() * GlobalResources.SCALEFACTOR,
+				(position.getY()+1) * GlobalResources.SCALEFACTOR);
+		this.setRow((1+position.y));
+		this.setColumn(position.x);
+		this.setDirection(GlobalResources.DIRECTION_LEFT);
 	}
 
 	public void resetAppearance() {

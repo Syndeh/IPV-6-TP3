@@ -30,7 +30,7 @@ public class PacmanLevelScene extends GraphGameScene {
 
 	private final static String CLEANMAP = ResourceUtil.getResourceString("PacmanLevelScene.CLEANMAP");
 	private List<Ghost> ghosts;
-	private Pacman pacman = new Pacman();
+	private Pacman pacman;
 	private List<Pill> pills;
 	private PointsCounter counter;
 	private Sound pillSound = new SoundBuilder().buildSound("/sounds/pacman_chomp.wav");
@@ -51,10 +51,9 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 	
 	private void addPacman() {
-		this.addComponent(this.pacman);
 		Point position = this.getMapGraph().getColorsMap().get(16711936).get(0);
-		this.pacman.setX((position.getX())+1 * 2);
-		this.pacman.setY((position.getY())+1 * 2);
+		this.pacman  = new Pacman(position);
+		this.addComponent(this.pacman);
 	}
 
 	private void addCounter() {
@@ -63,7 +62,7 @@ public class PacmanLevelScene extends GraphGameScene {
 	}
 
 	private void addGhosts() {
-//		this.createSmartGhost(65536,"Blinky");
+		this.createSmartGhost(65536,"Blinky");
 		this.createStupiGhost(65281, "Pinky");
 		this.createStupiGhost(16711681, "Inky");
 		this.createStupiGhost(32768, "Clyde");
@@ -71,18 +70,18 @@ public class PacmanLevelScene extends GraphGameScene {
 
 	private void createSmartGhost(int color, String name) {
 		Point position = this.getMapGraph().getColorsMap().get(color).get(0);
-		Ghost ghost = new Ghost(name);
-		ghost.setX((position.getX())+1 * 2);
-		ghost.setY((position.getY())+1 * 2);
+		Ghost ghost = new Ghost(name, position);
+//		ghost.setX((position.getX())+1 * 2);
+//		ghost.setY((position.getY())+1 * 2);
 		ghost.setMovementRule(new SmartMovement());
 		this.addComponent(ghost);
 		this.ghosts.add(ghost);
 	}
 	private void createStupiGhost(int color, String name) {
 		Point position = this.getMapGraph().getColorsMap().get(color).get(0);
-		Ghost ghost = new Ghost(name);
-		ghost.setX((position.getX() +1)* 2);
-		ghost.setY((position.getY() +1) * 2);
+		Ghost ghost = new Ghost(name,position);
+//		ghost.setX((position.getX() +1)* 2);
+//		ghost.setY((position.getY() +1) * 2);
 		ghost.setMovementRule(new StupidMovement());
 		this.addComponent(ghost);
 		this.ghosts.add(ghost);
